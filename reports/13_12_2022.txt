@@ -1,0 +1,7 @@
+yesterday:
+  - Ознакомился с дизайном.
+today:
+   - выстраил дизайн систему
+   - устоновил styled components
+problems:
+   - нет
