@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Ubuntu:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Ubuntu:wght@300;400;500;700&display=swap");
 
 :root {
   --main-clr: #7e5bc2;
@@ -104,7 +104,10 @@ select {
 }
 
 .container {
+  /* width: 527px;
   margin-inline: auto;
+  margin-block: auto; */
+
   padding-inline: 2rem;
-  /* max-width: ; */
+  background-color: aliceblue;
 }
