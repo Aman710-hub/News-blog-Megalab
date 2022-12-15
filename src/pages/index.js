@@ -1,3 +1,4 @@
+import Home from "./Home";
 import Rejester from "./Rejester";
 
-export { Rejester };
+export { Rejester, Home };

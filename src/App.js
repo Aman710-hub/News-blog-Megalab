@@ -1,10 +1,10 @@
-import { Rejester } from "./pages";
+import { Home, Rejester } from "./pages";
 
 function App() {
   return (
     <div className="App">
-      {/* <h2>"hi there"</h2> */}
-      <Rejester />
+      {/* <Rejester /> */}
+      <Home />
     </div>
   );
 }
