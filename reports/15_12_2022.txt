@@ -5,5 +5,7 @@ yesterday:
 today:
    - Сверстал Navbar
    - Добавил атаптив к Navbar
+   - Сверстал Footer
+   - Добавил атаптив к Footer
 problems:
    - нет
