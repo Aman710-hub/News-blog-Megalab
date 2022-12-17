@@ -44,7 +44,6 @@ const Filter = ({ toggleModal }) => {
 export default Filter;
 
 const Wrapper = styled.section`
-  background-color: red;
   width: 222px;
   height: 310px;
   border-radius: 10px;

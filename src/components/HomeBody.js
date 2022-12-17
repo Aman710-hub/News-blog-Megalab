@@ -93,7 +93,9 @@ const HomeBody = () => {
         </svg>
       </span>
       <div className="iner_wrapper">
-        <Filter toggleModal={toggleModal} />
+        <div className="wrapper">
+          <Filter toggleModal={toggleModal} />
+        </div>
         <span className="for_spacing"></span>
         <NewsList />
       </div>
@@ -104,7 +106,6 @@ const HomeBody = () => {
 export default HomeBody;
 
 const Wrapper = styled.section`
-  background-color: #222;
   position: relative;
   margin-top: 46px;
 
@@ -115,19 +116,19 @@ const Wrapper = styled.section`
     grid-template-columns: 222px 8.8% auto;
   }
 
+  .slider {
+    position: absolute;
+    right: 10%;
+    margin-top: -33px;
+    cursor: pointer;
+  }
+
+  .showSlider {
+    display: block;
+  }
+
   @media (max-width: 900px) {
     margin-top: 56px;
-
-    .iner_wrapper {
-      /* display: block; */
-      /* margin-inline: auto; */
-      /* grid-template-columns: 1fr; */
-      /* place-content: center; */
-    }
-
-    .for_spacing {
-      position: absolute;
-    }
   }
 
   @media (max-width: 1132px) {
@@ -135,18 +136,20 @@ const Wrapper = styled.section`
       margin-inline: 5%;
     }
   }
+  @media (max-width: 1026px) {
+    .wrapper {
+      display: none;
+    }
 
-  .slider {
-    position: absolute;
-    right: 10%;
-    margin-top: -40px;
-    cursor: pointer;
+    .for_spacing {
+      display: none;
+    }
+    .iner_wrapper {
+      grid-template-columns: 1fr;
+      justify-items: center;
+    }
   }
-
-  .showSlider {
-    display: block;
-  }
-  @media (min-width: 900px) {
+  @media (min-width: 1026px) {
     .slider {
       display: none;
     }
