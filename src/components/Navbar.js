@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import back from "../imges/nav-background.jpg";
-// const picUrl = new URL("../imges/nav-background.jpg", import.meta.url);
 
 const Navbar = () => {
+  const [activePerson, setActivePerson] = useState(false);
+  const [activeMenu, setActiveMenu] = useState(false);
+
   return (
-    <Wrapper>
+    <Wrapper
+      onClick={(e) => {
+        setActivePerson(false);
+        setActiveMenu(false);
+      }}
+    >
       <div className="navbar">
         <span className="logo">
           <svg
@@ -97,7 +104,15 @@ const Navbar = () => {
               />
             </svg>
           </span>
-          <span className="person_icon">
+          <span
+            className="person_icon"
+            onClick={(e) => {
+              if (activeMenu) setActiveMenu(false);
+              setActivePerson(!activePerson);
+              // эТО НУЖНО ЧТО БЫ ЗАКРЫВАТЬ САБМЕНЮ ПРИ НАЖАТИИ НАВБРА
+              e.stopPropagation();
+            }}
+          >
             <svg
               width="28"
               height="28"
@@ -121,8 +136,24 @@ const Navbar = () => {
               />
               <circle cx="14" cy="14" r="13" stroke="white" strokeWidth="2" />
             </svg>
+            {activePerson && (
+              <div className="drop_down_menu">
+                <a href="">Мой профиль</a>
+                <hr />
+                <a href="">Выйти</a>
+              </div>
+            )}
           </span>
-          <span>
+          <span
+            className="menu_icon"
+            onClick={(e) => {
+              if (activePerson) setActivePerson(false);
+              setActiveMenu(!activeMenu);
+
+              // эТО НУЖНО ЧТО БЫ ЗАКРЫВАТЬ САБМЕНЮ ПРИ НАЖАТИИ НАВБРА
+              e.stopPropagation();
+            }}
+          >
             <svg
               width="29"
               height="29"
@@ -152,6 +183,11 @@ const Navbar = () => {
                 strokewinejoin="round"
               />
             </svg>
+            {activeMenu && (
+              <div className="drop_down_menu_burger">
+                <a href="">Избранные новости</a>
+              </div>
+            )}
           </span>
         </div>
       </div>
@@ -171,11 +207,73 @@ const Wrapper = styled.nav`
   /* BACKGROUND IMG */
   background-image: url(${back});
 
+  a {
+    color: black;
+  }
+
   .navbar {
     margin-inline: 10%; // 150px
     display: grid;
     grid-template-columns: 1fr 1fr;
     padding-top: 30px;
+  }
+
+  .menu_icon {
+    position: relative;
+  }
+
+  .drop_down_menu {
+    position: absolute;
+    background-color: #ffffff;
+    border-radius: 10px;
+    width: 176px;
+    /* width: auto; */
+    /* height: 86px; */
+    height: auto;
+    left: -137px;
+    bottom: -92px;
+    z-index: 1000;
+    padding: 12px 15px 12px 12px;
+  }
+  .drop_down_menu_burger {
+    position: absolute;
+    background-color: #ffffff;
+    border-radius: 10px;
+    width: 176px;
+    height: auto;
+    left: -137px;
+    bottom: -74px;
+    z-index: 1000;
+    padding: 13px 10px 12px 12px;
+  }
+
+  .drop_down_menu::before {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid #ffffff;
+    position: absolute;
+    top: -5px;
+    left: 86%;
+    transform: translateX(-50%);
+    z-index: 1000;
+  }
+  .drop_down_menu_burger::before {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid #ffffff;
+    position: absolute;
+    top: -5px;
+    left: 86%;
+    transform: translateX(-50%);
+    z-index: 1000;
   }
 
   .nav_icons {
@@ -185,6 +283,7 @@ const Wrapper = styled.nav`
 
   .person_icon {
     margin-inline: 30px;
+    position: relative;
   }
 
   .title {

@@ -2,12 +2,18 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Filter from "./Filter";
 import NewsList from "./NewsList";
+import Pop_up_filter from "./Pop_up_filter";
 
 const HomeBody = () => {
-  const [toggleModal, setToggleModal] = useState(true);
+  const [toggleModal, setToggleModal] = useState(false);
+
+  // prevent scrolling when pop up is open
+  toggleModal
+    ? (document.body.style.overflow = "hidden")
+    : (document.body.style.overflow = "auto");
   return (
     <Wrapper className="container">
-      <span onClick={() => setToggleModal(!toggleModal)} className="slider">
+      <a onClick={() => setToggleModal(true)} className="slider">
         <svg
           width="24"
           height="24"
@@ -91,10 +97,16 @@ const HomeBody = () => {
             </clipPath>
           </defs>
         </svg>
-      </span>
+      </a>
       <div className="iner_wrapper">
-        <div className="wrapper">
-          <Filter toggleModal={toggleModal} />
+        <div className="filter_wrapper">
+          <Filter />
+        </div>
+        <div className="filter_pop_up_modal">
+          <Pop_up_filter
+            toggleModal={toggleModal}
+            setToggleModal={setToggleModal}
+          />
         </div>
         <span className="for_spacing"></span>
         <NewsList />
@@ -123,9 +135,12 @@ const Wrapper = styled.section`
     cursor: pointer;
   }
 
-  .showSlider {
-    display: block;
+  /* to get rid of grid system */
+  .filter_pop_up_modal {
+    position: absolute;
   }
+
+  /* MEDIA QUERY */
 
   @media (max-width: 900px) {
     margin-top: 56px;
@@ -137,7 +152,7 @@ const Wrapper = styled.section`
     }
   }
   @media (max-width: 1026px) {
-    .wrapper {
+    .filter_wrapper {
       display: none;
     }
 
