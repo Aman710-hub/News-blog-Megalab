@@ -5,5 +5,8 @@ yesterday:
 today:
    - Сделал сабменю для navbar'а
    - Сверстал pop up филтер
+   -Сделал поиск
+   - refactor: rename Navbar to Hero
+   - creat Navbar component
 problems:
    - нет

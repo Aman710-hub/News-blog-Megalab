@@ -1,12 +1,18 @@
 import React from "react";
 import styled from "styled-components";
-import { Footre, Navbar, HomeBody, NewsList, Filter } from "../components";
+import {
+  Footre,
+  Hero,
+  HomeBody,
+  NewsList,
+  Filter,
+  Navbar,
+} from "../components";
 
 const Home = () => {
   return (
     <Wrapper>
-      <Navbar />
-
+      <Hero />
       <HomeBody />
       <Footre />
     </Wrapper>
