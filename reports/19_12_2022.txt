@@ -1,0 +1,12 @@
+yesterday:
+    - Сделал сабменю для navbar'а
+   - Сверстал pop up филтер
+   -Сделал поиск
+   - refactor: rename Navbar to Hero
+   - creat Navbar component
+today:
+    - Добавил станицу Favorite
+    - Создал отдельный компонент Item 
+    - Провел некоторый рефакторинг компонентов
+problems:
+   - нет

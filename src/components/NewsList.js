@@ -1,16 +1,15 @@
 import React from "react";
 import styled from "styled-components";
-import NewsItem from "./NewsItem";
+import HomePageItem from "./HomePageItem";
 
 const NewsList = () => {
   return (
     <Wrapper>
-      <NewsItem />
-      <NewsItem />
-      <NewsItem />
-      <NewsItem />
-      <NewsItem />
-      <NewsItem />
+      <HomePageItem />
+      <HomePageItem />
+      <HomePageItem />
+      <HomePageItem />
+      <HomePageItem />
     </Wrapper>
   );
 };

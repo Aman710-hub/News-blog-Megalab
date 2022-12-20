@@ -1,13 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import {
-  Footre,
-  Hero,
-  HomeBody,
-  NewsList,
-  Filter,
-  Navbar,
-} from "../components";
+import { Footre, Hero, HomeBody } from "../components";
+import Favorite from "./Favorite";
 
 const Home = () => {
   return (
@@ -15,6 +9,7 @@ const Home = () => {
       <Hero />
       <HomeBody />
       <Footre />
+      <Favorite />
     </Wrapper>
   );
 };

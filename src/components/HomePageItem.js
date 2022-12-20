@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import prod_img from "../imges/Proct_img.jpg";
 
-const NewsItem = () => {
+const HomePageItem = () => {
   return (
     <>
       <Wrapper>
@@ -92,17 +92,19 @@ const NewsItem = () => {
   );
 };
 
-export default NewsItem;
+export default HomePageItem;
 
 const Wrapper = styled.section`
-  width: 100%;
-  max-width: 843px;
+  /* width: 100%;
+  max-width: (); */
+  /* max-width: 843px; */
   margin-bottom: 15px;
   margin-top: 15px;
 
   .card {
     display: grid;
     grid-template-columns: auto 1fr;
+    /* grid-template-columns: minmax(10rem, 19.813rem); */
   }
 
   .product_img {
@@ -148,7 +150,7 @@ const Wrapper = styled.section`
   }
 
   /* MEDIA QUERY */
-  /* 580 */
+  /* 580, 1132 */
 
   @media (max-width: 1132px) {
     .card {

@@ -357,7 +357,7 @@ const Wrapper = styled.nav`
   /* MEDIA QUERY */
 
   @media (max-width: 580px) {
-    height: 10.188rem;
+    /* height: 10.188rem; */
   }
 
   @media (max-width: 580px) {
