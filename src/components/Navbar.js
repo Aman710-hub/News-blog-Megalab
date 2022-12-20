@@ -218,7 +218,7 @@ const Navbar = () => {
 export default Navbar;
 
 const Wrapper = styled.nav`
-  background-color: red;
+  /* background-color: red; */
   width: 100%;
   max-width: 90rem;
   margin-inline: auto;

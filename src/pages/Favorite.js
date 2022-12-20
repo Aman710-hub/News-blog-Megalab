@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { Item, Navbar } from "../components";
+import { Footre, Item, Navbar } from "../components";
 
 const Favorite = () => {
   return (
     <Wrapper>
-      <Navbar />
+      {/* <Navbar /> */}
       <h2 className="Favorit_page_title">Избранные новости</h2>
       <div className="grid_layout">
         <Item />
@@ -16,6 +16,7 @@ const Favorite = () => {
         <Item />
         <Item />
       </div>
+      {/* <Footre /> */}
     </Wrapper>
   );
 };

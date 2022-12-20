@@ -6,10 +6,9 @@ import Favorite from "./Favorite";
 const Home = () => {
   return (
     <Wrapper>
-      <Hero />
+      {/* <Hero /> */}
       <HomeBody />
-      <Footre />
-      <Favorite />
+      {/* <Footre /> */}
     </Wrapper>
   );
 };

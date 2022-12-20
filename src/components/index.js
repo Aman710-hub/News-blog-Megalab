@@ -9,6 +9,9 @@ import Pop_up_filter from "./Pop_up_filter";
 import Navbar from "./Navbar";
 import HomePageItem from "./HomePageItem";
 import Item from "./Item";
+import MainLayout from "./MainLayout";
+import SecenderyLayout from "./SecenderyLayout";
+import Coment from "./Coment";
 
 export {
   Button,
@@ -22,4 +25,7 @@ export {
   Pop_up_filter,
   Navbar,
   Item,
+  MainLayout,
+  SecenderyLayout,
+  Coment,
 };
