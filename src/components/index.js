@@ -12,6 +12,8 @@ import Item from "./Item";
 import MainLayout from "./MainLayout";
 import SecenderyLayout from "./SecenderyLayout";
 import Coment from "./Coment";
+import ImgUpload from "./ImgUpload";
+import ProfileForm from "./ProfileForm";
 
 export {
   Button,
@@ -28,4 +30,6 @@ export {
   MainLayout,
   SecenderyLayout,
   Coment,
+  ImgUpload,
+  ProfileForm,
 };

@@ -1,0 +1,8 @@
+yesterday:
+    - Сделел Shared layout
+    - Сделал внутренную часть новости 
+    - Сделал coment компаненту 
+today:
+    - Свестал компонента Favorite
+problems:
+   - 

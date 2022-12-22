@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-const Button = ({ name }) => {
-  return <Wrapper>{name}</Wrapper>;
+const Button = ({ name, width }) => {
+  return <Wrapper style={{ width }}>{name}</Wrapper>;
 };
 
 export default Button;
@@ -15,8 +15,8 @@ const Wrapper = styled.button`
   font-size: 16px;
   background: #7e5bc2;
   text-decoration: none;
-  width: 100%;
-  max-width: 10.5rem;
+  /* width: 100%;
+  max-width: 10.5rem; */
   height: 1.875rem;
   font-weight: 500;
 
