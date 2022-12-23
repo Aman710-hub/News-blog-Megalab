@@ -1,14 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Button, ImgUpload, Item } from "../components";
+import { Button, ImgUpload, Item, ProfileForm } from "../components";
 
+let width = 0;
+window.addEventListener("resize", () => {
+  width = window.innerWidth;
+  console.log(width);
+});
 const Profile = () => {
   return (
     <Wrapper>
-      <ImgUpload />
+      <div className="profile_header">
+        <ImgUpload />
+        <ProfileForm />
+      </div>
       <div className="flex_wrapper">
         <h2 className="profile_title">Мои публикации</h2>
-        <Button width="330px" name="Новая публикация" />
+        {width > 600 ? (
+          <Button maxWidth="191px" name="Новая публикация" />
+        ) : (
+          // <Button maxWidth="91px" name="+" />
+          <Button maxWidth="191px" name="Новая публикация" />
+        )}
       </div>
       <div className="grid_layout">
         <Item />
@@ -26,12 +39,23 @@ const Wrapper = styled.section`
   width: 100%;
   max-width: 90rem;
   margin-inline: auto;
+  margin-top: 50px;
 
   .flex_wrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-block: 45px;
+    margin-inline: 10%;
+  }
+
+  .profile_header {
+    display: grid;
+    grid-auto-flow: column;
+    /* justify-content: space-between; */
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    width: 50%;
     margin-inline: 10%;
   }
 
@@ -57,13 +81,32 @@ const Wrapper = styled.section`
     }
 
     .profile_title {
+      font-size: 34px;
+    }
+  }
+
+  @media (max-width: 636px) {
+    margin-top: 42px;
+    .flex_wrapper {
       margin-inline: 5%;
+    }
+    .profile_title {
+      font-size: 24px;
+    }
+    .profile_header {
+      width: 85%;
     }
   }
 
   @media (max-width: 600px) {
     .grid_layout {
       grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 580px) {
+    .profile_header {
+      margin-inline: 5%;
     }
   }
 `;

@@ -1,0 +1,6 @@
+yesterday:
+      - Свестал компонента Favorite
+today:
+  
+problems:
+   - 
