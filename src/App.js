@@ -1,7 +1,6 @@
 import { Favorite, Home, InnerPage, Profile, Rejester } from "./pages";
 import { Routes, Route } from "react-router-dom";
 import { MainLayout, SecenderyLayout } from "./components";
-
 function App() {
   return (
     <div className="App">

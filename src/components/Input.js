@@ -1,20 +1,26 @@
 import React from "react";
 import styled from "styled-components";
 
-const Input = ({ name, type }) => {
+const Input = ({ lable, type, name, value, handleChange }) => {
   return (
     <Wrapper>
-      <form action="" className="form">
+      <div className="form">
         <div className="inputs">
-          <label className="lablel">{name}</label>
+          <label className="lablel">{lable}</label>
           <div className="wrapper">
-            <input className="input" type={type} name={type} />
-            {name === "Пароль" ? (
+            <input
+              className="input"
+              type={type}
+              name={name}
+              value={value}
+              onChange={handleChange}
+            />
+            {lable === "Пароль" ? (
               <p className="uderInput">Лимит на символы</p>
             ) : null}
           </div>
         </div>
-      </form>
+      </div>
     </Wrapper>
   );
 };

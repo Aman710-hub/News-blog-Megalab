@@ -1,13 +1,53 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Button, Input } from "../components";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "../features/userSllice";
+import { toast } from "react-toastify";
+
+const initialState = {
+  name: "",
+  last_name: "",
+  nickname: "",
+  password: "",
+  password2: "",
+};
 
 const Rejester = () => {
   const [value, setValue] = useState({ isLogged: false });
+  const [formValue, setFormValue] = useState(initialState);
+  const dispatch = useDispatch();
 
+  // form functions
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    console.log("🚀 ~ handleChange ~ value", value);
+
+    setFormValue({ ...formValue, [name]: value });
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const { name, nickname, last_name, password, password2 } = formValue;
+    if (!name || !last_name || !password2 || !nickname || !password) {
+      toast.error("Заполните все поля!");
+      return;
+    }
+    dispatch(
+      registerUser({
+        name: name,
+        password: password,
+        password2: password2,
+        nickname: nickname,
+        last_name: last_name,
+      })
+    );
+    return;
+  };
   return (
     <Wrapper>
-      <div className="container rejester-block ">
+      <form onSubmit={onSubmit} className="container rejester-block ">
         {/* LOGO START */}
         <span>
           <svg
@@ -77,12 +117,46 @@ const Rejester = () => {
 
           {/* Logo END */}
         </span>
-        {value.isLogged === false && <Input name="Фамилия" type="text" />}
-        {value.isLogged === false && <Input name="Имя" type="text" />}
-        <Input name="Никнейм" type="text" />
-        <Input name="Пароль" type="password" />
         {value.isLogged === false && (
-          <Input name="Подтверждение пароля" type="password" />
+          <Input
+            value={formValue.last_name}
+            lable="Фамилия"
+            name="last_name"
+            type="text"
+            handleChange={handleChange}
+          />
+        )}
+        {value.isLogged === false && (
+          <Input
+            value={formValue.name}
+            lable="Имя"
+            name="name"
+            type="text"
+            handleChange={handleChange}
+          />
+        )}
+        <Input
+          value={formValue.nickname}
+          lable="Никнейм"
+          name="nickname"
+          type="text"
+          handleChange={handleChange}
+        />
+        <Input
+          value={formValue.password}
+          lable="Пароль"
+          name="password"
+          type="password"
+          handleChange={handleChange}
+        />
+        {value.isLogged === false && (
+          <Input
+            value={formValue.password2}
+            lable="Подтверждение пароля"
+            type="password"
+            name="password2"
+            handleChange={handleChange}
+          />
         )}
         <div className="btn">
           <Button name={value.isLogged === false ? "Регистрация" : "Войти"} />
@@ -96,7 +170,7 @@ const Rejester = () => {
             {value.isLogged === true ? "Регистрация" : "Войти"}
           </span>
         </p>
-      </div>
+      </form>
     </Wrapper>
   );
 };
