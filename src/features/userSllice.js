@@ -1,10 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import customFetch from "../utils/axios";
+import {
+  getUserFromLocalStorage,
+  removeFromLocalStorage,
+  setUserToLocalStorage,
+} from "../utils/localStorage";
 
 const initialState = {
   isLoading: false,
-  user: "h",
+  user: getUserFromLocalStorage(),
 };
 
 export const registerUser = createAsyncThunk(
@@ -12,13 +18,23 @@ export const registerUser = createAsyncThunk(
   async (user, thunkAPI) => {
     try {
       const resp = await customFetch.post("/registration/", user);
-      console.log(user, resp);
+      // console.log(user, resp);
       return resp.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.non_field_errors[0]);
+      console.log(error.response);
+      if (error.response.data.non_field_errors) {
+        return thunkAPI.rejectWithValue(
+          error.response.data.non_field_errors[0]
+        );
+      }
+      if (error.response.data.nickname) {
+        return thunkAPI.rejectWithValue(error.response.data.nickname[0]);
+      }
     }
   }
 );
+
+// const nav = useNavigate();
 
 export const userSlice = createSlice({
   name: "user",
@@ -30,8 +46,9 @@ export const userSlice = createSlice({
     [registerUser.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
       // const { user } = payload;
-      // toast.success(`Hello`);
-      // console.log(payload);
+      console.log(payload.name);
+      setUserToLocalStorage(payload);
+      toast.success(`Добро пожаловать ${payload.name}`);
     },
     [registerUser.rejected]: (state, { payload }) => {
       state.isLoading = false;

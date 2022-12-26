@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Button, Input } from "../components";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../features/userSllice";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
+import { getUserFromLocalStorage } from "../utils/localStorage";
 
 const initialState = {
   name: "",
@@ -14,9 +16,12 @@ const initialState = {
 };
 
 const Rejester = () => {
+  const { user } = useSelector((store) => store.user);
+
   const [value, setValue] = useState({ isLogged: false });
   const [formValue, setFormValue] = useState(initialState);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // form functions
   const handleChange = (e) => {
@@ -34,6 +39,10 @@ const Rejester = () => {
       toast.error("Заполните все поля!");
       return;
     }
+
+    if (password !== password2) {
+      toast.error("Passwords must match.");
+    }
     dispatch(
       registerUser({
         name: name,
@@ -43,8 +52,19 @@ const Rejester = () => {
         last_name: last_name,
       })
     );
-    return;
   };
+
+  // auto navigate
+  useEffect(() => {
+    if (user) {
+      console.log("user geted");
+      setTimeout(() => {
+        console.log("timer worked");
+        toast.success("navigating!!!!!!!");
+        navigate("/");
+      }, 5000);
+    }
+  }, [user]);
   return (
     <Wrapper>
       <form onSubmit={onSubmit} className="container rejester-block ">
@@ -159,7 +179,10 @@ const Rejester = () => {
           />
         )}
         <div className="btn">
-          <Button name={value.isLogged === false ? "Регистрация" : "Войти"} />
+          <Button
+            name={value.isLogged === false ? "Регистрация" : "Войти"}
+            type="submit"
+          />
         </div>
         <p className="isLogged">
           {value.isLogged === true ? "Нет аккаунта?" : " Уже есть логин?"}

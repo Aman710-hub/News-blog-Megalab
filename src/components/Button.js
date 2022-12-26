@@ -1,8 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 
-const Button = ({ name, maxWidth, height }) => {
-  return <Wrapper style={{ maxWidth, height }}>{name}</Wrapper>;
+const Button = ({ name, maxWidth, height, type }) => {
+  return (
+    <Wrapper type={type} style={{ maxWidth, height }}>
+      {name}
+    </Wrapper>
+  );
 };
 
 export default Button;

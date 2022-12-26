@@ -1,0 +1,6 @@
+yesterday:
+    - Все еще делеаю регистрацию
+today:
+    - Закончил регистрацию 
+problems:
+   - State не передается через useSelector
