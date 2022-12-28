@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import styled from "styled-components";
@@ -12,15 +12,20 @@ window.addEventListener("resize", () => {
   console.log(width);
 });
 const Profile = () => {
-  const dispacth = useDispatch();
-  useEffect(() => {
-    dispacth(getUser());
-    toast.success("hiiiii");
-    // const user = getUserFromLocalStorage();
-  }, []);
+  // const [value, setValue] = useState();
+  // const [value1, setValue1] = useState();
+  // let userData;
+  // const dispacth = useDispatch();
+  // useEffect(() => {
+  //   dispacth(getUser());
+  //   toast.success("hiiiii");
+  //   setValue(getUserFromLocalStorage());
+  // }, []);
+  // console.log("user from LC", getUserFromLocalStorage());
   // const userData = useSelector((store) => store.user.userData);
-
+  // useEffect(() => {}, []);
   // console.log("🚀 ~ Profile ~ user", user);
+  // setValue1(1);
   return (
     <Wrapper>
       <div className="profile_header">

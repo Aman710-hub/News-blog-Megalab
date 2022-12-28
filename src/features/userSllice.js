@@ -45,6 +45,7 @@ export const loginUser = createAsyncThunk(
       console.log(resp.data.token);
       console.log(user);
       console.log(thunkAPI.getState);
+      removeFromLocalStorage();
       return resp.data;
     } catch (error) {
       console.log(error.response);
@@ -62,6 +63,7 @@ export const getUser = createAsyncThunk(
         },
       });
       console.log(resp.data);
+      setUserToLocalStorage(resp.data);
       return resp.data;
     } catch (error) {
       console.log(error.response);
