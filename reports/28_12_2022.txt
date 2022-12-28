@@ -1,0 +1,6 @@
+yesterday:
+    - Закончил регистрацию 
+today:
+    - Сделал авторизацию
+problems:
+   -  useSelector

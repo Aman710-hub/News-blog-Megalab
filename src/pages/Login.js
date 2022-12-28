@@ -8,19 +8,14 @@ import { useNavigate } from "react-router";
 import { getUserFromLocalStorage } from "../utils/localStorage";
 
 const initialState = {
-  name: "",
-  last_name: "",
   nickname: "",
   password: "",
-  password2: "",
 };
 
 const Rejester = () => {
-  const { user, token } = useSelector((store) => store.user);
-  console.log("🚀 ~ Rejester ~ user", user);
+  const { user } = useSelector((store) => store.user);
 
   const [value, setValue] = useState({ isLogged: false });
-
   const [formValue, setFormValue] = useState(initialState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -36,56 +31,29 @@ const Rejester = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
     const { name, nickname, last_name, password, password2 } = formValue;
-    if (value.isLogged === false) {
-      if (!name || !last_name || !password2 || !nickname || !password) {
-        toast.error("Заполните все поля!");
-        return;
-      }
-      if (password !== password2) {
-        toast.error("Passwords must match.");
-        return;
-      }
-      dispatch(
-        registerUser({
-          name: name,
-          password: password,
-          password2: password2,
-          nickname: nickname,
-          last_name: last_name,
-        })
-      );
-
+    if (!name || !last_name || !password2 || !nickname || !password) {
+      toast.error("Заполните все поля!");
       return;
     }
-    //
-    if (value.isLogged) {
-      if (!nickname || !password) {
-        toast.error("Заполните все поля!");
-      }
-      dispatch(loginUser({ nickname: nickname, password: password }));
+    if (password !== password2) {
+      toast.error("Passwords must match.");
       return;
     }
+    dispatch(loginUser({ nickname: nickname, password: password }));
   };
 
-  useEffect(() => {
-    if (user) {
-      setValue({ ...value, isLogged: true });
-    }
-  }, [user]);
-
   // auto navigate
-  useEffect(() => {
-    if (token) {
-      console.log("user geted");
-      setTimeout(() => {
-        console.log("timer worked");
-        toast.success("navigating!!!!!!!");
-        navigate("/");
-      }, 5000);
-    }
-  }, [token]);
+  // useEffect(() => {
+  //   if (user) {
+  //     console.log("user geted");
+  //     setTimeout(() => {
+  //       console.log("timer worked");
+  //       toast.success("navigating!!!!!!!");
+  //       navigate("/");
+  //     }, 5000);
+  //   }
+  // }, [user]);
   return (
     <Wrapper>
       <form onSubmit={onSubmit} className="container rejester-block ">
@@ -158,24 +126,7 @@ const Rejester = () => {
 
           {/* Logo END */}
         </span>
-        {value.isLogged === false && (
-          <Input
-            value={formValue.last_name}
-            lable="Фамилия"
-            name="last_name"
-            type="text"
-            handleChange={handleChange}
-          />
-        )}
-        {value.isLogged === false && (
-          <Input
-            value={formValue.name}
-            lable="Имя"
-            name="name"
-            type="text"
-            handleChange={handleChange}
-          />
-        )}
+
         <Input
           value={formValue.nickname}
           lable="Никнейм"
@@ -190,23 +141,9 @@ const Rejester = () => {
           type="password"
           handleChange={handleChange}
         />
-        {value.isLogged === false && (
-          <Input
-            value={formValue.password2}
-            lable="Подтверждение пароля"
-            type="password"
-            name="password2"
-            handleChange={handleChange}
-          />
-        )}
-        <div
-          className="btn"
-          // onClick={() => setValue({ ...value, isLogged: true })}
-        >
-          <Button
-            name={value.isLogged === false ? "Регистрация" : "Войти"}
-            type="submit"
-          />
+
+        <div className="btn">
+          <Button name="Войти" type="submit" />
         </div>
         <p className="isLogged">
           {value.isLogged === true ? "Нет аккаунта?" : " Уже есть логин?"}

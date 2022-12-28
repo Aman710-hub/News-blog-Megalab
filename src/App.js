@@ -1,5 +1,13 @@
-import { Favorite, Home, InnerPage, Profile, Rejester } from "./pages";
-import { Routes, Route } from "react-router-dom";
+import {
+  Favorite,
+  Home,
+  InnerPage,
+  Profile,
+  Rejester,
+  ProtectedRoute,
+} from "./pages";
+
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { MainLayout, SecenderyLayout } from "./components";
 function App() {
   return (

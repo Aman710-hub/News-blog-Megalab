@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { getAllPosts } from "../features/news/newsSlice";
 import HomePageItem from "./HomePageItem";
 
 const NewsList = () => {
+  const dispacth = useDispatch();
+  useEffect(() => {
+    dispacth(getAllPosts());
+  }, []);
   return (
     <Wrapper>
       <HomePageItem />

@@ -1,6 +1,10 @@
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import { Button, ImgUpload, Item, ProfileForm } from "../components";
+import { getUser } from "../features/userSllice";
+import { getUserFromLocalStorage } from "../utils/localStorage";
 
 let width = 0;
 window.addEventListener("resize", () => {
@@ -8,11 +12,20 @@ window.addEventListener("resize", () => {
   console.log(width);
 });
 const Profile = () => {
+  const dispacth = useDispatch();
+  useEffect(() => {
+    dispacth(getUser());
+    toast.success("hiiiii");
+    // const user = getUserFromLocalStorage();
+  }, []);
+  // const userData = useSelector((store) => store.user.userData);
+
+  // console.log("🚀 ~ Profile ~ user", user);
   return (
     <Wrapper>
       <div className="profile_header">
         <ImgUpload />
-        <ProfileForm />
+        <ProfileForm data={getUserFromLocalStorage()} />
       </div>
       <div className="flex_wrapper">
         <h2 className="profile_title">Мои публикации</h2>

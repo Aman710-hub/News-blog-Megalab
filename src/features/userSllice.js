@@ -4,13 +4,17 @@ import { toast } from "react-toastify";
 import customFetch from "../utils/axios";
 import {
   getUserFromLocalStorage,
+  getUserTokenFromLocalStorage,
   removeFromLocalStorage,
+  setUserTokenToLocalStorage,
   setUserToLocalStorage,
 } from "../utils/localStorage";
 
 const initialState = {
   isLoading: false,
-  user: getUserFromLocalStorage(),
+  user: null,
+  token: null,
+  userData: {},
 };
 
 export const registerUser = createAsyncThunk(
@@ -33,6 +37,38 @@ export const registerUser = createAsyncThunk(
     }
   }
 );
+export const loginUser = createAsyncThunk(
+  "user/loginUser",
+  async (user, thunkAPI) => {
+    try {
+      const resp = await customFetch.post("/login/", user);
+      console.log(resp.data.token);
+      console.log(user);
+      console.log(thunkAPI.getState);
+      return resp.data;
+    } catch (error) {
+      console.log(error.response);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+export const getUser = createAsyncThunk(
+  "user/getUser",
+  async (user, thunkAPI) => {
+    try {
+      const resp = await customFetch.get("/user/", {
+        headers: {
+          authorization: `Token ${getUserTokenFromLocalStorage()}`,
+        },
+      });
+      console.log(resp.data);
+      return resp.data;
+    } catch (error) {
+      console.log(error.response);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
 
 // const nav = useNavigate();
 
@@ -45,12 +81,40 @@ export const userSlice = createSlice({
     },
     [registerUser.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
-      // const { user } = payload;
-      console.log(payload.name);
-      setUserToLocalStorage(payload);
+      state.user = payload;
+      // setUserToLocalStorage(payload);
       toast.success(`Добро пожаловать ${payload.name}`);
     },
     [registerUser.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload);
+      state.user = null;
+    },
+    // login
+    [loginUser.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [loginUser.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      setUserTokenToLocalStorage(payload.token);
+      state.token = payload.token;
+      state.user = state.user;
+      // toast.success(`С возврвшением`);
+    },
+    [loginUser.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error("Неверный пользователь");
+    },
+    // get user
+    [getUser.pending]: (state, { payload }) => {
+      state.isLoading = true;
+    },
+    [getUser.fulfilled]: (state, { payload }) => {
+      // state.userData = payload;\
+      setUserToLocalStorage(payload);
+      toast.success("get data");
+    },
+    [getUser.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload);
     },

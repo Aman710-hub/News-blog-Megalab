@@ -3,14 +3,14 @@ import styled from "styled-components";
 import Button from "./Button";
 import Input from "./Input";
 
-const ProfileForm = () => {
+const ProfileForm = ({ data }) => {
   return (
     <Wrapper>
       <form action="" className="form">
         <div className="inputs">
           <label className="lablel">Фамилия</label>
           <div className="wrapper">
-            <input className="input" type="text" />
+            <input className="input" type="text" value={data?.last_name} />
             <svg
               className="edit_icon"
               width="16"
@@ -48,7 +48,7 @@ const ProfileForm = () => {
         <div className="inputs">
           <label className="lablel">Имя</label>
           <div className="wrapper">
-            <input className="input" type="text" />
+            <input className="input" type="text" value={data?.name} />
             <svg
               className="edit_icon"
               width="16"
@@ -86,7 +86,7 @@ const ProfileForm = () => {
         <div className="inputs">
           <label className="lablel">Никнейм</label>
           <div className="wrapper">
-            <input className="input" type="text" />
+            <input className="input" type="text" value={data?.nickname} />
             <svg
               className="edit_icon"
               width="16"
