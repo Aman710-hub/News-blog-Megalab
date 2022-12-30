@@ -12,17 +12,19 @@ import { MainLayout, SecenderyLayout } from "./components";
 function App() {
   return (
     <div className="App">
-      <Routes>
-        <Route path="register" element={<Rejester />} />
-        <Route path="/" element={<MainLayout />}>
-          <Route index element={<Home />} />
-          <Route path="inner_page" element={<InnerPage />} />
-        </Route>
-        <Route path="/" element={<SecenderyLayout />}>
-          <Route path="favorite" element={<Favorite />} />
-          <Route path="profile" element={<Profile />} />
-        </Route>
-      </Routes>
+      <BrowserRouter>
+        <Routes>
+          <Route path="register" element={<Rejester />} />
+          <Route path="/" element={<MainLayout />}>
+            <Route index element={<Home />} />
+            <Route path="inner_page" element={<InnerPage />} />
+          </Route>
+          <Route path="/" element={<SecenderyLayout />}>
+            <Route path="favorite" element={<Favorite />} />
+            <Route path="profile" element={<Profile />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

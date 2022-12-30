@@ -12,7 +12,7 @@ import {
 
 const initialState = {
   isLoading: false,
-  user: null,
+  user: {},
   token: null,
   userData: {},
 };
@@ -42,9 +42,9 @@ export const loginUser = createAsyncThunk(
   async (user, thunkAPI) => {
     try {
       const resp = await customFetch.post("/login/", user);
-      console.log(resp.data.token);
-      console.log(user);
-      console.log(thunkAPI.getState);
+      // console.log(resp.data.token);
+      // console.log(user);
+      // console.log(thunkAPI.getState);
       removeFromLocalStorage();
       return resp.data;
     } catch (error) {
@@ -71,8 +71,24 @@ export const getUser = createAsyncThunk(
     }
   }
 );
-
-// const nav = useNavigate();
+export const editUser = createAsyncThunk(
+  "user/editUser",
+  async (user, thunkAPI) => {
+    try {
+      const resp = await customFetch.put("/user/", user, {
+        headers: {
+          authorization: `Token ${getUserTokenFromLocalStorage()}`,
+        },
+      });
+      console.log("edit user", resp.data);
+      setUserToLocalStorage(resp.data);
+      return resp.data;
+    } catch (error) {
+      console.log(error.response);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
 
 export const userSlice = createSlice({
   name: "user",
@@ -100,7 +116,7 @@ export const userSlice = createSlice({
       state.isLoading = false;
       setUserTokenToLocalStorage(payload.token);
       state.token = payload.token;
-      state.user = state.user;
+      // state.user = payload;
       // toast.success(`С возврвшением`);
     },
     [loginUser.rejected]: (state, { payload }) => {
@@ -111,12 +127,27 @@ export const userSlice = createSlice({
     [getUser.pending]: (state, { payload }) => {
       state.isLoading = true;
     },
-    [getUser.fulfilled]: (state, { payload }) => {
-      // state.userData = payload;\
+    [getUser.fulfilled]: (state, payload) => {
+      state.userData = payload;
+      console.log(payload, "kkkkkkkkkkkkkkkkkkkk");
       setUserToLocalStorage(payload);
       toast.success("get data");
     },
     [getUser.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload);
+    },
+    // edit user
+    [editUser.pending]: (state, { payload }) => {
+      state.isLoading = true;
+    },
+    [editUser.fulfilled]: (state, { payload }) => {
+      state.userData = payload;
+
+      // setUserToLocalStorage(payload);
+      // toast.success("get data");
+    },
+    [editUser.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload);
     },

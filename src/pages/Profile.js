@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import { Button, ImgUpload, Item, ProfileForm } from "../components";
-import { getUser } from "../features/userSllice";
+import { editUser, getUser } from "../features/userSllice";
 import { getUserFromLocalStorage } from "../utils/localStorage";
 
 let width = 0;
@@ -11,26 +11,51 @@ window.addEventListener("resize", () => {
   width = window.innerWidth;
   console.log(width);
 });
+
 const Profile = () => {
-  // const [value, setValue] = useState();
-  // const [value1, setValue1] = useState();
-  // let userData;
-  // const dispacth = useDispatch();
-  // useEffect(() => {
-  //   dispacth(getUser());
-  //   toast.success("hiiiii");
-  //   setValue(getUserFromLocalStorage());
-  // }, []);
-  // console.log("user from LC", getUserFromLocalStorage());
-  // const userData = useSelector((store) => store.user.userData);
-  // useEffect(() => {}, []);
-  // console.log("🚀 ~ Profile ~ user", user);
-  // setValue1(1);
+  // const data = useSelector((store) => store.user.isLoading);
+  const data = getUserFromLocalStorage();
+  console.log("🚀 ~ Profile ~ data", data);
+
+  const dispatch = useDispatch();
+  const [value, setValue] = useState({
+    name: data?.name || "",
+    last_name: data?.last_name || "",
+    nickname: data?.nickname || "",
+  });
+  // const [name, setName] = useState({ name: data?.name || "" });
+  // const [last_name, setLast_Name] = useState({
+  //   last_name: data?.last_name || "",
+  // });
+  // const [nickname, setNickname] = useState({ nickname: data?.nickname || "" });
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    // const { name, nickname, last_name } = value;
+    // if (!name || !last_name || !nickname) {
+    //   toast.error("Заполните все поля");
+    //   return;
+    // }
+    dispatch(
+      editUser({
+        name: name.name,
+        last_name: last_name.last_name,
+        nickname: nickname.nickname,
+      })
+    );
+  };
+
+  const onChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    // setValue({ ...value, [name]: value });
+    console.log(value);
+  };
   return (
     <Wrapper>
       <div className="profile_header">
         <ImgUpload />
-        <ProfileForm data={getUserFromLocalStorage()} />
+        <ProfileForm data={data} onChange={onChange} onSubmit={onSubmit} />
       </div>
       <div className="flex_wrapper">
         <h2 className="profile_title">Мои публикации</h2>

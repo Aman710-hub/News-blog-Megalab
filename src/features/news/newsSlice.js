@@ -28,8 +28,8 @@ export const getAllPosts = createAsyncThunk(
           },
         }
       );
-      console.log(resp);
-      console.log(getUserTokenFromLocalStorage());
+      // console.log(resp);
+      // console.log(getUserTokenFromLocalStorage());
 
       return resp.data;
     } catch (error) {
