@@ -7,40 +7,17 @@ import Button from "./Button";
 import Input from "./Input";
 
 const ProfileForm = ({ data, onChange, onSubmit }) => {
-  // const initialState =
-
   return (
     <Wrapper>
       <form onSubmit={onSubmit}>
-        <input
-          className="input"
-          type="text"
-          value={data?.last_name}
-          name="last_name"
-          onChange={onChange}
-        />
-        <input
-          className="input"
-          type="text"
-          value={data?.name}
-          name="name"
-          onChange={onChange}
-        />
-        <input
-          className="input"
-          type="text"
-          value={data?.nickname}
-          name="nickname"
-          onChange={onChange}
-        />
-        {/* <div className="form">
+        <div className="form">
           <div className="inputs">
             <label className="lablel">Фамилия</label>
             <div className="wrapper">
               <input
                 className="input"
                 type="text"
-                value={value.last_name}
+                value={data?.last_name}
                 name="last_name"
                 onChange={onChange}
               />
@@ -84,7 +61,7 @@ const ProfileForm = ({ data, onChange, onSubmit }) => {
               <input
                 className="input"
                 type="text"
-                value={value.name}
+                value={data?.name}
                 name="name"
                 onChange={onChange}
               />
@@ -128,7 +105,7 @@ const ProfileForm = ({ data, onChange, onSubmit }) => {
               <input
                 className="input"
                 type="text"
-                value={value.nickname}
+                value={data?.nickname}
                 name="nickname"
                 onChange={onChange}
               />
@@ -172,8 +149,7 @@ const ProfileForm = ({ data, onChange, onSubmit }) => {
             maxWidth="128px"
             height="38px"
           />
-        </div> */}
-        <Button type="submit" name="Сохранить" maxWidth="128px" height="38px" />
+        </div>
       </form>
     </Wrapper>
   );

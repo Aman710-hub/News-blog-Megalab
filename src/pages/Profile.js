@@ -18,29 +18,24 @@ const Profile = () => {
   console.log("🚀 ~ Profile ~ data", data);
 
   const dispatch = useDispatch();
-  const [value, setValue] = useState({
+  const [userInfo, setUserInfo] = useState({
     name: data?.name || "",
     last_name: data?.last_name || "",
     nickname: data?.nickname || "",
   });
-  // const [name, setName] = useState({ name: data?.name || "" });
-  // const [last_name, setLast_Name] = useState({
-  //   last_name: data?.last_name || "",
-  // });
-  // const [nickname, setNickname] = useState({ nickname: data?.nickname || "" });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // const { name, nickname, last_name } = value;
-    // if (!name || !last_name || !nickname) {
-    //   toast.error("Заполните все поля");
-    //   return;
-    // }
+    const { name, nickname, last_name } = userInfo;
+    if (!name || !last_name || !nickname) {
+      toast.error("Заполните все поля");
+      return;
+    }
     dispatch(
       editUser({
-        name: name.name,
-        last_name: last_name.last_name,
-        nickname: nickname.nickname,
+        name: name,
+        last_name: last_name,
+        nickname: nickname,
       })
     );
   };
@@ -48,14 +43,14 @@ const Profile = () => {
   const onChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    // setValue({ ...value, [name]: value });
+    setUserInfo({ ...userInfo, [name]: value });
     console.log(value);
   };
   return (
     <Wrapper>
       <div className="profile_header">
         <ImgUpload />
-        <ProfileForm data={data} onChange={onChange} onSubmit={onSubmit} />
+        <ProfileForm data={userInfo} onChange={onChange} onSubmit={onSubmit} />
       </div>
       <div className="flex_wrapper">
         <h2 className="profile_title">Мои публикации</h2>

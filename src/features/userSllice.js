@@ -42,9 +42,6 @@ export const loginUser = createAsyncThunk(
   async (user, thunkAPI) => {
     try {
       const resp = await customFetch.post("/login/", user);
-      // console.log(resp.data.token);
-      // console.log(user);
-      // console.log(thunkAPI.getState);
       removeFromLocalStorage();
       return resp.data;
     } catch (error) {
@@ -80,7 +77,7 @@ export const editUser = createAsyncThunk(
           authorization: `Token ${getUserTokenFromLocalStorage()}`,
         },
       });
-      console.log("edit user", resp.data);
+
       setUserToLocalStorage(resp.data);
       return resp.data;
     } catch (error) {
@@ -141,11 +138,12 @@ export const userSlice = createSlice({
     [editUser.pending]: (state, { payload }) => {
       state.isLoading = true;
     },
-    [editUser.fulfilled]: (state, { payload }) => {
+    [editUser.fulfilled]: (state, payload) => {
       state.userData = payload;
+      console.log(payload);
 
       // setUserToLocalStorage(payload);
-      // toast.success("get data");
+      toast.success("get data");
     },
     [editUser.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
