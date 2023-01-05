@@ -1,20 +1,28 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import imgi from "../imges/profile_default_img.jpg";
-import Button from "./Button";
-import ProfileForm from "./ProfileForm";
+import { editUser } from "../features/userSllice";
+import { updateProfileImg } from "../features/userSllice";
 const ImgUpload = () => {
-  const [img, setImg] = useState(null);
+  const { profile_image } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+  const [profileImg, setProfileImg] = useState(null);
+  const [im, setIm] = useState(null);
+
+  // const handleFormData = (file) => {
+
+  // };
   const onFileSelect = (e) => {
     if (e.target.files.leghth !== 0) {
-      setImg(URL.createObjectURL(e.target.files[0]));
+      setProfileImg(URL.createObjectURL(e.target.files[0]));
+      setIm(e.target.files[0]);
+      // dispatch(updateProfileImg(im));
     }
-    console.log(img);
   };
   return (
     <Wrapper>
-      {img ? (
-        <img src={img} className="avatar"></img>
+      {profileImg ? (
+        <img src={profileImg || profile_image} className="avatar"></img>
       ) : (
         <div>
           <img src="" className="avatar"></img>
@@ -95,7 +103,7 @@ const ImgUpload = () => {
             />
           </svg>
         </label>
-        <p onClick={() => setImg(null)}>
+        <p onClick={() => setProfileImg(null)}>
           Удалить{" "}
           <svg
             className="icon"

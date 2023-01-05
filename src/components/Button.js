@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
-const Button = ({ name, maxWidth, height, type }) => {
+const Button = ({ name, maxWidth, height, type, onClick }) => {
   return (
-    <Wrapper type={type} style={{ maxWidth, height }}>
+    <Wrapper onClick={onClick} type={type} style={{ maxWidth, height }}>
       {name}
     </Wrapper>
   );

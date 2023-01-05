@@ -14,6 +14,8 @@ import { getUserTokenFromLocalStorage } from "../../utils/localStorage";
 const initialState = {
   isLoading: false,
   news: [],
+  post: {},
+  togList: [],
 };
 
 export const getAllPosts = createAsyncThunk(
@@ -28,9 +30,47 @@ export const getAllPosts = createAsyncThunk(
           },
         }
       );
-      // console.log(resp);
-      // console.log(getUserTokenFromLocalStorage());
-
+      return resp.data;
+    } catch (error) {
+      console.log(error.response);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+export const addPost = createAsyncThunk(
+  "post/addPost",
+  async (postData, thunkAPI) => {
+    try {
+      const resp = await customFetch.post(
+        "https://megalab.pythonanywhere.com/post/",
+        postData,
+        {
+          headers: {
+            authorization: `Token ${getUserTokenFromLocalStorage()}`,
+          },
+        }
+      );
+      console.log(resp.data);
+      return resp.data;
+    } catch (error) {
+      console.log(error.response);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+export const getTagList = createAsyncThunk(
+  "post/getTagList",
+  async (_, thunkAPI) => {
+    try {
+      const resp = await customFetch.get(
+        "https://megalab.pythonanywhere.com/tag/",
+        {
+          headers: {
+            authorization: `Token ${getUserTokenFromLocalStorage()}`,
+          },
+        }
+      );
+      console.log(resp.data);
       return resp.data;
     } catch (error) {
       console.log(error.response);
@@ -45,6 +85,14 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   extraReducers: {
+    [getTagList.fulfilled]: (state, { payload }) => {
+      state.tagList = payload;
+      console.log(state.tagList);
+    },
+    // ADD POST
+    [addPost.fulfilled]: (state, { payload }) => {
+      state.post = payload;
+    },
     // login
     //  [loginUser.pending]: (state) => {
     //    state.isLoading = true;

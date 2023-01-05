@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import styled from "styled-components";
-import { Button, ImgUpload, Item, ProfileForm } from "../components";
+import {
+  AddNewPost,
+  Button,
+  ImgUpload,
+  Item,
+  ProfileForm,
+} from "../components";
+import { getTagList } from "../features/news/newsSlice";
 import { editUser, getUser } from "../features/userSllice";
 import { getUserFromLocalStorage } from "../utils/localStorage";
 
@@ -13,29 +20,37 @@ window.addEventListener("resize", () => {
 });
 
 const Profile = () => {
-  // const data = useSelector((store) => store.user.isLoading);
+  const { profile_image } = useSelector((store) => store.user);
   const data = getUserFromLocalStorage();
-  console.log("🚀 ~ Profile ~ data", data);
+  const [toggleModal, setToggleModal] = useState(false);
+
+  // prevent scrolling when pop up is open
+  toggleModal
+    ? (document.body.style.overflow = "hidden")
+    : (document.body.style.overflow = "auto");
 
   const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState({
     name: data?.name || "",
     last_name: data?.last_name || "",
     nickname: data?.nickname || "",
+    profile_image: profile_image || null,
   });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const { name, nickname, last_name } = userInfo;
+    const { name, nickname, last_name, profile_image } = userInfo;
     if (!name || !last_name || !nickname) {
       toast.error("Заполните все поля");
       return;
     }
+
     dispatch(
       editUser({
         name: name,
         last_name: last_name,
         nickname: nickname,
+        profile_image: profile_image,
       })
     );
   };
@@ -46,20 +61,30 @@ const Profile = () => {
     setUserInfo({ ...userInfo, [name]: value });
     console.log(value);
   };
+
+  useEffect(() => {
+    dispatch(getTagList());
+  }, []);
   return (
     <Wrapper>
+      <AddNewPost toggleModal={toggleModal} setToggleModal={setToggleModal} />
       <div className="profile_header">
         <ImgUpload />
         <ProfileForm data={userInfo} onChange={onChange} onSubmit={onSubmit} />
       </div>
       <div className="flex_wrapper">
         <h2 className="profile_title">Мои публикации</h2>
-        {width > 600 ? (
-          <Button maxWidth="191px" name="Новая публикация" />
+        <Button
+          onClick={() => setToggleModal(true)}
+          maxWidth="191px"
+          name="Новая публикация"
+        />
+
+        {/* {width > 600 ? (
         ) : (
           // <Button maxWidth="91px" name="+" />
           <Button maxWidth="191px" name="Новая публикация" />
-        )}
+        )} */}
       </div>
       <div className="grid_layout">
         <Item />

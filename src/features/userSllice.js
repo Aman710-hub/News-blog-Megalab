@@ -15,6 +15,7 @@ const initialState = {
   user: {},
   token: null,
   userData: {},
+  profile_image: null,
 };
 
 export const registerUser = createAsyncThunk(
@@ -75,6 +76,7 @@ export const editUser = createAsyncThunk(
       const resp = await customFetch.put("/user/", user, {
         headers: {
           authorization: `Token ${getUserTokenFromLocalStorage()}`,
+          "Content-Type": "multipart/form-data",
         },
       });
 
@@ -90,7 +92,23 @@ export const editUser = createAsyncThunk(
 export const userSlice = createSlice({
   name: "user",
   initialState,
+  reducers: {
+    updateProfileImg: (state, { payload }) => {
+      // console.log(payload);
+      // let formData = new FormData();
+      // formData.append("profile_image", payload);
+      // state.profile_image = formData;
+    },
+  },
   extraReducers: {
+    // edit user
+    [editUser.fulfilled]: (state, payloadData) => {
+      const { payload } = payloadData;
+      state.isLoading = true;
+      state.userData = payloadData;
+      console.log(payload);
+    },
+    // REGISTER
     [registerUser.pending]: (state) => {
       state.isLoading = true;
     },
@@ -134,25 +152,11 @@ export const userSlice = createSlice({
       state.isLoading = false;
       toast.error(payload);
     },
-    // edit user
-    [editUser.pending]: (state, { payload }) => {
-      state.isLoading = true;
-    },
-    [editUser.fulfilled]: (state, payload) => {
-      state.userData = payload;
-      console.log(payload);
-
-      // setUserToLocalStorage(payload);
-      toast.success("get data");
-    },
-    [editUser.fulfilled]: (state, { payload }) => {
-      state.isLoading = false;
-      toast.error(payload);
-    },
   },
 });
 
 export default userSlice.reducer;
+export const { updateProfileImg } = userSlice.actions;
 
 // fetch(
 //         "https://megalab.pythonanywhere.com/registration/",

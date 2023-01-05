@@ -14,7 +14,7 @@ import SecenderyLayout from "./SecenderyLayout";
 import Coment from "./Coment";
 import ImgUpload from "./ImgUpload";
 import ProfileForm from "./ProfileForm";
-
+import AddNewPost from "./AddNewPost";
 export {
   Button,
   Input,
@@ -32,4 +32,5 @@ export {
   Coment,
   ImgUpload,
   ProfileForm,
+  AddNewPost,
 };
