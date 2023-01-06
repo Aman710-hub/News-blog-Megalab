@@ -13,23 +13,21 @@ import { getUserTokenFromLocalStorage } from "../../utils/localStorage";
 // } from "../utils/localStorage";
 const initialState = {
   isLoading: false,
-  news: [],
+  postList: [],
   post: {},
   togList: [],
+  postDitails: {},
 };
 
 export const getAllPosts = createAsyncThunk(
   "user/getAllPosts",
-  async (user, thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
-      const resp = await customFetch.get(
-        "/post/?search=some_text&tag=tag_text&author=author_nickname",
-        {
-          headers: {
-            authorization: `Token ${getUserTokenFromLocalStorage()}`,
-          },
-        }
-      );
+      const resp = await customFetch.get("/post/", {
+        headers: {
+          authorization: `Token ${getUserTokenFromLocalStorage()}`,
+        },
+      });
       return resp.data;
     } catch (error) {
       console.log(error.response);
@@ -70,6 +68,23 @@ export const getTagList = createAsyncThunk(
           },
         }
       );
+      return resp.data;
+    } catch (error) {
+      console.log(error.response);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const getPostDitails = createAsyncThunk(
+  "post/getPostDitails",
+  async ({ postId }, thunkAPI) => {
+    try {
+      const resp = await customFetch.get(`/post/${postId}/`, {
+        headers: {
+          authorization: `Token ${getUserTokenFromLocalStorage()}`,
+        },
+      });
       console.log(resp.data);
       return resp.data;
     } catch (error) {
@@ -85,6 +100,15 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   extraReducers: {
+    [getPostDitails.fulfilled]: (state, { payload }) => {
+      state.postDitails = payload;
+      console.log("🚀 ~ payload", payload);
+    },
+    // GET ALL POSTS
+    [getAllPosts.fulfilled]: (state, { payload }) => {
+      state.postList = payload;
+    },
+    // GET TAG LIST
     [getTagList.fulfilled]: (state, { payload }) => {
       state.tagList = payload;
       console.log(state.tagList);
@@ -93,19 +117,6 @@ export const userSlice = createSlice({
     [addPost.fulfilled]: (state, { payload }) => {
       state.post = payload;
     },
-    // login
-    //  [loginUser.pending]: (state) => {
-    //    state.isLoading = true;
-    //  },
-    //  [loginUser.fulfilled]: (state, { payload }) => {
-    //    state.isLoading = false;
-    //    setUserTokenToLocalStorage(payload.token);
-    //    toast.success(`С возврвшением`);
-    //  },
-    //  [loginUser.rejected]: (state, { payload }) => {
-    //    state.isLoading = false;
-    //    toast.error("Неверный пользователь");
-    //  },
   },
 });
 

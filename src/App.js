@@ -17,7 +17,7 @@ function App() {
           <Route path="register" element={<Rejester />} />
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
-            <Route path="inner_page" element={<InnerPage />} />
+            <Route path="/:postId" element={<InnerPage />} />
           </Route>
           <Route path="/" element={<SecenderyLayout />}>
             <Route path="favorite" element={<Favorite />} />

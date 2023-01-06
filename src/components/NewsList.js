@@ -1,21 +1,39 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { getAllPosts } from "../features/news/newsSlice";
 import HomePageItem from "./HomePageItem";
 
 const NewsList = () => {
+  const { postList } = useSelector((store) => store.news);
   const dispacth = useDispatch();
   useEffect(() => {
     dispacth(getAllPosts());
   }, []);
   return (
     <Wrapper>
-      <HomePageItem />
-      <HomePageItem />
-      <HomePageItem />
-      <HomePageItem />
-      <HomePageItem />
+      {postList.map((item) => {
+        const {
+          id,
+          tag,
+          title,
+          text,
+          image,
+          is_liked,
+          comment,
+          short_desc,
+          author,
+        } = item;
+        return (
+          <HomePageItem
+            key={id}
+            image={image}
+            title={title}
+            short_desc={short_desc}
+            id={id}
+          />
+        );
+      })}
     </Wrapper>
   );
 };

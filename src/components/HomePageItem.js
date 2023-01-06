@@ -1,13 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { getPostDitails } from "../features/news/newsSlice";
 import prod_img from "../imges/Proct_img.jpg";
 
-const HomePageItem = () => {
+const HomePageItem = ({ title, image, short_desc, id }) => {
+  const dispacth = useDispatch();
+
   return (
     <>
       <Wrapper>
         <div className="card">
-          <img src={prod_img} alt="product image" className="product_img" />
+          <img
+            src={`https://megalab.pythonanywhere.com/${image}`}
+            alt="product image"
+            className="product_img"
+          />
           <div className="card_body">
             <div className="inner_wrapper">
               <p className="data">29.11.2022</p>
@@ -29,16 +38,11 @@ const HomePageItem = () => {
                 </svg>
               </span>
             </div>
-            <h3 className="title">Заголовок новости</h3>
-            <p className="card_text">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
-              vulputate libero et velit interdum, ac aliquet odio mattis. Class
-              aptent taciti sociosqu ad litora torquent per conubia nostra, per
-              inceptos himenaeos.
-            </p>
-            <a href="" className="read_more">
+            <h3 className="title">{title}</h3>
+            <p className="card_text">{short_desc}</p>
+            <Link to={`/${id}`} className="read_more">
               Читать дальше {">>"}
-            </a>
+            </Link>
             <a href="" className="share">
               <svg
                 width="24"
@@ -108,9 +112,11 @@ const Wrapper = styled.section`
   }
 
   .product_img {
-    height: 13.188rem;
     margin-right: 40px;
     height: 211px;
+    width: 100%;
+    max-width: 255px;
+    object-fit: cover;
   }
 
   .data {

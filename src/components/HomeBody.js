@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { getPostDitails } from "../features/news/newsSlice";
 import Filter from "./Filter";
 import NewsList from "./NewsList";
 import Pop_up_filter from "./Pop_up_filter";
 
 const HomeBody = () => {
+  const dispacth = useDispatch();
   const [toggleModal, setToggleModal] = useState(false);
 
   // prevent scrolling when pop up is open
