@@ -4,19 +4,14 @@ import { toast } from "react-toastify";
 import customFetch from "../../utils/axios";
 import { getUserTokenFromLocalStorage } from "../../utils/localStorage";
 
-// import {
-//   getUserFromLocalStorage,
-//   getUserTokenFromLocalStorage,
-//   removeFromLocalStorage,
-//   setUserTokenToLocalStorage,
-//   setUserToLocalStorage,
-// } from "../utils/localStorage";
 const initialState = {
   isLoading: false,
   postList: [],
   post: {},
   togList: [],
   postDitails: {},
+  is_liked: null,
+  likedPostList: [],
 };
 
 export const getAllPosts = createAsyncThunk(
@@ -48,7 +43,6 @@ export const addPost = createAsyncThunk(
           },
         }
       );
-      console.log(resp.data);
       return resp.data;
     } catch (error) {
       console.log(error.response);
@@ -85,7 +79,43 @@ export const getPostDitails = createAsyncThunk(
           authorization: `Token ${getUserTokenFromLocalStorage()}`,
         },
       });
-      console.log(resp.data);
+      return resp.data;
+    } catch (error) {
+      console.log(error.response);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+export const likePost = createAsyncThunk(
+  "post/likePost",
+  async (postId, thunkAPI) => {
+    console.log("🚀 ~ postId", postId);
+    try {
+      const resp = await customFetch.post(
+        "/like/",
+        { post: postId },
+        {
+          headers: {
+            authorization: `Token ${getUserTokenFromLocalStorage()}`,
+          },
+        }
+      );
+      return resp.data;
+    } catch (error) {
+      console.log(error.response);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+export const getLikedPosts = createAsyncThunk(
+  "post/getLikedPosts",
+  async (postId, thunkAPI) => {
+    try {
+      const resp = await customFetch.get("/like/", {
+        headers: {
+          authorization: `Token ${getUserTokenFromLocalStorage()}`,
+        },
+      });
       return resp.data;
     } catch (error) {
       console.log(error.response);
@@ -96,13 +126,24 @@ export const getPostDitails = createAsyncThunk(
 
 // const nav = useNavigate();
 
-export const userSlice = createSlice({
-  name: "user",
+export const newsSlice = createSlice({
+  name: "newsSlice",
   initialState,
+  reducers: {
+    likePostReducer: (state, { payload }) => {
+      // state.is_liked_postList = payload;
+      // state.is_liked_postList = !state.is_liked_postList;
+      state.is_liked = !state.is_liked;
+    },
+  },
   extraReducers: {
+    [getLikedPosts.fulfilled]: (state, { payload }) => {
+      state.likedPostList = payload;
+    },
+    // GET POST DITAILS
     [getPostDitails.fulfilled]: (state, { payload }) => {
       state.postDitails = payload;
-      console.log("🚀 ~ payload", payload);
+      state.is_liked = payload.is_liked;
     },
     // GET ALL POSTS
     [getAllPosts.fulfilled]: (state, { payload }) => {
@@ -111,7 +152,6 @@ export const userSlice = createSlice({
     // GET TAG LIST
     [getTagList.fulfilled]: (state, { payload }) => {
       state.tagList = payload;
-      console.log(state.tagList);
     },
     // ADD POST
     [addPost.fulfilled]: (state, { payload }) => {
@@ -119,5 +159,5 @@ export const userSlice = createSlice({
     },
   },
 });
-
-export default userSlice.reducer;
+export const { likePostReducer, getLikes } = newsSlice.actions;
+export default newsSlice.reducer;

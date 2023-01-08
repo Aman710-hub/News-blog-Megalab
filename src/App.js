@@ -22,6 +22,7 @@ function App() {
           <Route path="/" element={<SecenderyLayout />}>
             <Route path="favorite" element={<Favorite />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="favorite/:postID" element={<InnerPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

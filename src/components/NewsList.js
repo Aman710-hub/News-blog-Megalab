@@ -31,6 +31,7 @@ const NewsList = () => {
             title={title}
             short_desc={short_desc}
             id={id}
+            is_liked={is_liked}
           />
         );
       })}

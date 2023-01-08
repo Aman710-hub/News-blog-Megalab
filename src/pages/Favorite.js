@@ -1,22 +1,34 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { Footre, Item, Navbar } from "../components";
+import { getLikedPosts } from "../features/news/newsSlice";
 
 const Favorite = () => {
+  const dispacth = useDispatch();
+  const { likedPostList } = useSelector((store) => store.news);
+  useEffect(() => {
+    dispacth(getLikedPosts());
+  }, []);
   return (
     <Wrapper>
       {/* <Navbar /> */}
       <h2 className="Favorit_page_title">Избранные новости</h2>
       <div className="grid_layout">
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-        <Item />
+        {likedPostList.map((item) => {
+          const { id, title, image, is_liked, short_desc } = item;
+          return (
+            <Item
+              key={id}
+              image={image}
+              title={title}
+              short_desc={short_desc}
+              id={id}
+              is_liked={is_liked}
+            />
+          );
+        })}
       </div>
-      {/* <Footre /> */}
     </Wrapper>
   );
 };
@@ -36,7 +48,7 @@ const Wrapper = styled.section`
   }
 
   .grid_layout {
-    display: grid;
+    /* display: grid; */
     place-items: center;
     /* grid-template-columns: 1fr; */
     margin-inline: 10%;
