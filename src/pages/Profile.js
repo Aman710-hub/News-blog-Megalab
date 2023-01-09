@@ -6,21 +6,23 @@ import {
   AddNewPost,
   Button,
   ImgUpload,
-  Item,
   ProfileForm,
+  ProfilePostItem,
 } from "../components";
-import { getTagList } from "../features/news/newsSlice";
+import { getAllPosts, getTagList } from "../features/news/newsSlice";
 import { editUser, getUser } from "../features/userSllice";
 import { getUserFromLocalStorage } from "../utils/localStorage";
 
-let width = 0;
-window.addEventListener("resize", () => {
-  width = window.innerWidth;
-  console.log(width);
-});
+// let width = 0;
+// window.addEventListener("resize", () => {
+//   width = window.innerWidth;
+//   console.log(width);
+// });
 
 const Profile = () => {
+  const dispatch = useDispatch();
   const { profile_image } = useSelector((store) => store.user);
+  const { postList } = useSelector((store) => store.news);
   const data = getUserFromLocalStorage();
   const [toggleModal, setToggleModal] = useState(false);
 
@@ -29,7 +31,6 @@ const Profile = () => {
     ? (document.body.style.overflow = "hidden")
     : (document.body.style.overflow = "auto");
 
-  const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState({
     name: data?.name || "",
     last_name: data?.last_name || "",
@@ -62,8 +63,13 @@ const Profile = () => {
     console.log(value);
   };
 
+  const arr = postList.filter((item) => {
+    return item.author === data.nickname;
+  });
+
   useEffect(() => {
     dispatch(getTagList());
+    dispatch(getAllPosts());
   }, []);
   return (
     <Wrapper>
@@ -79,18 +85,21 @@ const Profile = () => {
           maxWidth="191px"
           name="Новая публикация"
         />
-
-        {/* {width > 600 ? (
-        ) : (
-          // <Button maxWidth="91px" name="+" />
-          <Button maxWidth="191px" name="Новая публикация" />
-        )} */}
       </div>
       <div className="grid_layout">
-        <Item />
-        <Item />
-        <Item />
-        <Item />
+        {arr.map((item) => {
+          const { id, title, image, is_liked, short_desc } = item;
+          return (
+            <ProfilePostItem
+              key={id}
+              image={image}
+              title={title}
+              short_desc={short_desc}
+              id={id}
+              is_liked={is_liked}
+            />
+          );
+        })}
       </div>
     </Wrapper>
   );
@@ -128,7 +137,7 @@ const Wrapper = styled.section`
   }
 
   .grid_layout {
-    display: grid;
+    /* display: grid; */
     place-items: center;
     /* grid-template-columns: 1fr; */
     margin-inline: 10%;

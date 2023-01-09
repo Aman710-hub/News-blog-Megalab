@@ -45,8 +45,16 @@ export const addPost = createAsyncThunk(
       );
       return resp.data;
     } catch (error) {
-      console.log(error.response);
-      return thunkAPI.rejectWithValue(error.response.data);
+      console.log(error.response.data);
+      if (error.response.data.text) {
+        return thunkAPI.rejectWithValue(error.response.data.text[0]);
+      }
+      if (error.response.data.title) {
+        return thunkAPI.rejectWithValue(error.response.data.title[0]);
+      }
+      if (error.response.data.image) {
+        return thunkAPI.rejectWithValue(error.response.data.image[0]);
+      }
     }
   }
 );
@@ -123,6 +131,22 @@ export const getLikedPosts = createAsyncThunk(
     }
   }
 );
+export const deletePost = createAsyncThunk(
+  "post/deletePost",
+  async (postId, thunkAPI) => {
+    try {
+      const resp = await customFetch.delete(`/post/${postId}`, {
+        headers: {
+          authorization: `Token ${getUserTokenFromLocalStorage()}`,
+        },
+      });
+      return resp.data;
+    } catch (error) {
+      console.log(error.response);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
 
 // const nav = useNavigate();
 
@@ -137,6 +161,10 @@ export const newsSlice = createSlice({
     },
   },
   extraReducers: {
+    [deletePost.fulfilled]: () => {
+      toast.success("Пост успешно удален.");
+    },
+    // GET LIKED POSTS
     [getLikedPosts.fulfilled]: (state, { payload }) => {
       state.likedPostList = payload;
     },
@@ -156,6 +184,10 @@ export const newsSlice = createSlice({
     // ADD POST
     [addPost.fulfilled]: (state, { payload }) => {
       state.post = payload;
+      toast.success("Пост успешно создан.");
+    },
+    [addPost.rejected]: (state, { payload }) => {
+      toast.error(payload);
     },
   },
 });

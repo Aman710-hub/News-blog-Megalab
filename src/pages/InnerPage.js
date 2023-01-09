@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
-import { Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router";
+import { Link, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import { Coment } from "../components";
 import {
@@ -9,16 +9,19 @@ import {
   getPostDitails,
   likePostReducer,
 } from "../features/news/newsSlice";
+import { getUserFromLocalStorage } from "../utils/localStorage";
 
 const InnerPage = () => {
   const dispacth = useDispatch();
   const { postDitails, is_liked } = useSelector((store) => store.news);
   const { postId } = useParams();
   const baseUrl = `https://megalab.pythonanywhere.com/`;
-  console.log("useParams", useParams());
+  const [comment, setComment] = useState({});
+
   // Get data
   useEffect(() => {
     dispacth(getPostDitails({ postId }));
+    console.log(getUserFromLocalStorage());
   }, []);
 
   const likePostServer = () => {
@@ -26,10 +29,26 @@ const InnerPage = () => {
     dispacth(likePostReducer());
   };
 
+  const history = useNavigate();
+
+  const commentSubmit = () => {
+    const formComment = new FormData();
+    formComment.append("comment", comment);
+
+    dispacth(comment());
+  };
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    const name = e.target.name;
+    setComment({ [name]: value });
+    console.log(comment);
+  };
+
   return (
     <>
       <Wrapper>
-        <Link to="/favorite">
+        <Link onClick={() => history(-1)}>
           <svg
             className="arrow"
             width="41"
@@ -150,6 +169,15 @@ const InnerPage = () => {
             </a>
             <h3 className="title">Комментарии</h3>
           </div>
+        </div>
+        <div className="add_comment_input">
+          <label htmlFor="">Вы</label>
+          <input
+            type="text"
+            name="comment"
+            value={comment}
+            onChange={handleChange}
+          />
         </div>
         <Coment />
         <Coment />

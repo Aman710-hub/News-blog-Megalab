@@ -8,16 +8,13 @@ const AddNewPost = ({ toggleModal, setToggleModal }) => {
   const { tagList } = useSelector((store) => store.news);
   // STATE FOR SELECTED TAG
 
-  const [selectedTag, setSelectedTag] = useState();
-  console.log("🚀 ~ AddNewPost ~ selectedTag", selectedTag);
-
   const dispatch = useDispatch();
   // STATE FOR COLLECTING POST INFO
   const [postData, setPostData] = useState({
     title: "",
     text: "",
     image: "",
-    short_dec: "",
+    short_desc: "",
     tag: "Не выбрано",
   });
 
@@ -39,10 +36,10 @@ const AddNewPost = ({ toggleModal, setToggleModal }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     const data = new FormData();
-    data.append("title", postData.text);
     data.append("text", postData.text);
+    data.append("title", postData.title);
     data.append("image", postData.image);
-    data.append("short_dec", postData.short_dec);
+    data.append("short_desc", postData.short_desc);
     data.append("tag", postData.tag);
 
     dispatch(addPost(data));
@@ -124,40 +121,6 @@ const AddNewPost = ({ toggleModal, setToggleModal }) => {
                 name="image"
                 onChange={onPhotSelect}
               />
-              {/* <input type="button" htmlFor="file" /> */}
-              {/* <label for="file" className="imgUploadLablel">
-                Загрузить
-                <svg
-                  className="icon"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M14 10V12.6667C14 13.0203 13.8595 13.3594 13.6095 13.6095C13.3594 13.8595 13.0203 14 12.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V10"
-                    stroke="black"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M4.66699 6.66667L8.00033 10L11.3337 6.66667"
-                    stroke="black"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M8 10V2"
-                    stroke="black"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </label> */}
             </div>
             <div className="input_wrapper">
               <label className="lablel" htmlFor="">
@@ -178,8 +141,8 @@ const AddNewPost = ({ toggleModal, setToggleModal }) => {
               <input
                 type="text"
                 className="input"
-                name="short_dec"
-                value={postData.short_dec}
+                name="short_desc"
+                value={postData.short_desc}
                 onChange={handleChange}
               />
             </div>
