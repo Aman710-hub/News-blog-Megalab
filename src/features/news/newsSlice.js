@@ -148,6 +148,47 @@ export const deletePost = createAsyncThunk(
   }
 );
 
+export const Comment = createAsyncThunk(
+  "post/Comment",
+  async (commentData, thunkAPI) => {
+    console.log("comment worked");
+    try {
+      const resp = await customFetch.post("/comment/", commentData, {
+        headers: {
+          authorization: `Token ${getUserTokenFromLocalStorage()}`,
+        },
+      });
+      return resp.data;
+    } catch (error) {
+      console.log(error.response);
+      if (error.response.data.text) {
+        return thunkAPI.rejectWithValue(error.response.data.text[0]);
+      }
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const commentReplay = createAsyncThunk(
+  "post/commentReplay",
+  async (commentReplayData, thunkAPI) => {
+    try {
+      const resp = await customFetch.post("/comment/", commentReplayData, {
+        headers: {
+          authorization: `Token ${getUserTokenFromLocalStorage()}`,
+        },
+      });
+      return resp.data;
+    } catch (error) {
+      console.log(error.response.data);
+      if (error.response.data.text) {
+        return thunkAPI.rejectWithValue(error.response.data.text[0]);
+      }
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
 // const nav = useNavigate();
 
 export const newsSlice = createSlice({
@@ -155,12 +196,25 @@ export const newsSlice = createSlice({
   initialState,
   reducers: {
     likePostReducer: (state, { payload }) => {
-      // state.is_liked_postList = payload;
-      // state.is_liked_postList = !state.is_liked_postList;
       state.is_liked = !state.is_liked;
     },
   },
   extraReducers: {
+    // COMMETNT REPLAY
+    [commentReplay.fulfilled]: () => {
+      toast.success("Комментарий оставлен");
+    },
+    [commentReplay.rejected]: (state, { payload }) => {
+      toast.error(payload);
+    },
+    // COMMETNT
+    [Comment.fulfilled]: () => {
+      toast.success("Комментарий оставлен");
+    },
+    [Comment.rejected]: (state, { payload }) => {
+      toast.error(payload);
+    },
+    // DELETE POST
     [deletePost.fulfilled]: () => {
       toast.success("Пост успешно удален.");
     },

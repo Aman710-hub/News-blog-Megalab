@@ -16,6 +16,7 @@ import ImgUpload from "./ImgUpload";
 import ProfileForm from "./ProfileForm";
 import AddNewPost from "./AddNewPost";
 import ProfilePostItem from "./ProfilePostItem";
+import CommentReply from "./CommentReply";
 
 export {
   Button,
@@ -36,4 +37,5 @@ export {
   ProfileForm,
   AddNewPost,
   ProfilePostItem,
+  CommentReply,
 };

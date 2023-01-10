@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import { Link, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
-import { Coment } from "../components";
+import { Button, Coment } from "../components";
 import {
   likePost,
   getPostDitails,
   likePostReducer,
+  Comment,
 } from "../features/news/newsSlice";
 import { getUserFromLocalStorage } from "../utils/localStorage";
 
@@ -16,12 +17,15 @@ const InnerPage = () => {
   const { postDitails, is_liked } = useSelector((store) => store.news);
   const { postId } = useParams();
   const baseUrl = `https://megalab.pythonanywhere.com/`;
-  const [comment, setComment] = useState({});
+
+  const [dataCollect, setDataCollect] = useState({
+    comment: "",
+    post: postId,
+  });
 
   // Get data
   useEffect(() => {
     dispacth(getPostDitails({ postId }));
-    console.log(getUserFromLocalStorage());
   }, []);
 
   const likePostServer = () => {
@@ -31,18 +35,20 @@ const InnerPage = () => {
 
   const history = useNavigate();
 
-  const commentSubmit = () => {
-    const formComment = new FormData();
-    formComment.append("comment", comment);
+  const commentSubmit = (e) => {
+    e.preventDefault();
+    const data = new FormData();
+    data.append("text", dataCollect.comment);
+    data.append("post", dataCollect.post);
 
-    dispacth(comment());
+    dispacth(Comment(data));
   };
 
   const handleChange = (e) => {
     const value = e.target.value;
     const name = e.target.name;
-    setComment({ [name]: value });
-    console.log(comment);
+    setDataCollect({ ...dataCollect, [name]: value });
+    console.log(dataCollect.comment);
   };
 
   return (
@@ -169,18 +175,27 @@ const InnerPage = () => {
             </a>
             <h3 className="title">Комментарии</h3>
           </div>
+          <div className="add_comment_block">
+            <input
+              placeholder="Напишите комментарий"
+              className="commentInput"
+              type="text"
+              name="comment"
+              value={dataCollect.comment}
+              onChange={handleChange}
+            />
+            <Button
+              name="Коментировать"
+              maxWidth="180px"
+              onClick={commentSubmit}
+              height="38px"
+            />
+          </div>
         </div>
-        <div className="add_comment_input">
-          <label htmlFor="">Вы</label>
-          <input
-            type="text"
-            name="comment"
-            value={comment}
-            onChange={handleChange}
-          />
-        </div>
-        <Coment />
-        <Coment />
+
+        {postDitails?.comment?.map((item) => {
+          return <Coment key={item.id} comment={item} postId={postId} />;
+        })}
       </Wrapper>
     </>
   );
@@ -192,6 +207,21 @@ const Wrapper = styled.section`
   width: 100%;
   max-width: 90rem;
   margin-inline: auto;
+
+  .add_comment_block {
+    margin-bottom: 40px;
+  }
+  .commentInput {
+    width: 100%;
+    max-width: 346px;
+    height: 38px;
+    margin-right: 14px;
+    border-radius: 10px;
+    padding-left: 10px;
+    border-color: #d9d9d9;
+    border-width: 1px;
+    border-style: solid;
+  }
   .card {
     margin-inline: 10%;
   }
