@@ -1,41 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { getTagList, searchByTag } from "../features/news/newsSlice";
 import Button from "./Button";
 
 const Filter = ({ toggleModal }) => {
-  console.log(toggleModal);
+  const [tagName, setTagName] = useState("");
+  const [clicked, setClicked] = useState(false);
+  console.log("🚀 ~ Filter ~ clicked", clicked);
+
+  const { tagList } = useSelector((store) => store.news);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getTagList());
+  }, []);
+
+  const searchTag = (e) => {
+    dispatch(searchByTag(tagName));
+  };
+
   return (
     <Wrapper className={`${toggleModal ? "filter" : "showFilter"}`}>
       <div className="inner_wrapper">
         <h4 className="title">Фильтрация</h4>
         <div class="control-group">
-          <label class="control control-checkbox">
-            Спорт
-            <input type="checkbox" />
-            <div class="control_indicator"></div>
-          </label>
-          <label class="control control-checkbox">
-            Политика
-            <input type="checkbox" />
-            <div class="control_indicator"></div>
-          </label>
-          <label class="control control-checkbox">
-            Звезды
-            <input type="checkbox" />
-            <div class="control_indicator"></div>
-          </label>
-          <label class="control control-checkbox">
-            Искусство
-            <input type="checkbox" />
-            <div class="control_indicator"></div>
-          </label>
-          <label class="control control-checkbox">
-            Мода
-            <input type="checkbox" />
-            <div class="control_indicator"></div>
-          </label>
+          {tagList?.map((item) => {
+            return (
+              <div onClick={() => setClicked(!clicked)}>
+                <label className="control control-checkbox">
+                  {item.name}
+                  <input
+                    type="checkbox"
+                    value={item.name}
+                    onClick={(e) => setTagName(e.target.value)}
+                    // disabled={clicked}
+                  />
+                  <div
+                    // className={`${clicked ? "control_indicator" : "ci1"}`}
+                    className="control_indicator"
+                  ></div>
+                </label>
+              </div>
+            );
+          })}
         </div>
-        <Button name="Приминить" />
+        <Button onClick={searchTag} name="Приминить" />
       </div>
     </Wrapper>
   );
@@ -48,6 +57,7 @@ const Wrapper = styled.section`
   height: 310px;
   border-radius: 10px;
   padding: 20px 0 27px 27px;
+  margin-bottom: 100px;
 
   @media (max-width: 900px) {
     display: none;
@@ -59,6 +69,18 @@ const Wrapper = styled.section`
   .title {
     margin-bottom: 10px;
     font-size: 18px;
+  }
+
+  .control-group {
+    height: 300px;
+    /* overflow: scroll; */
+    overflow-x: scroll;
+    /* overflow: hidden; */
+    margin-bottom: 10px;
+  }
+
+  .control-group::-webkit-scrollbar {
+    display: none;
   }
 
   /* ------------------------------- */
@@ -91,22 +113,35 @@ const Wrapper = styled.section`
     border: 1px solid #000000;
     border-radius: 5px;
   }
+
+  .ci1 {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    height: 21px;
+    width: 21px;
+    background: #ffffff;
+    border: 6px solid #000000;
+    border-radius: 5px;
+  }
   .control:hover input ~ .control_indicator,
   .control input:focus ~ .control_indicator {
     background: #cccccc;
   }
 
   .control input:checked ~ .control_indicator {
-    background: #7e5bc2;
+    /* background: red; */
+    /* background: #7e5bc2; */
+    /* background: #ffffff; */
   }
   .control:hover input:not([disabled]):checked ~ .control_indicator,
   .control input:checked:focus ~ .control_indicator {
     background: #7757b5;
   }
   .control input:disabled ~ .control_indicator {
-    background: #e6e6e6;
-    opacity: 0.6;
-    pointer-events: none;
+    /* background: #e6e6e6; */
+    /* opacity: 0.6;
+    pointer-events: none; */
   }
   .control_indicator:after {
     box-sizing: unset;

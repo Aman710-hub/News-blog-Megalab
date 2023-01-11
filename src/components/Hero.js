@@ -1,11 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { searchByText } from "../features/news/newsSlice";
 import back from "../imges/nav-background.jpg";
 
 const Hero = () => {
+  const dispatch = useDispatch();
   const [activePerson, setActivePerson] = useState(false);
   const [activeMenu, setActiveMenu] = useState(false);
   const [activeSearch, setActiveSearch] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const onChange = (e) => {
+    const value = e.target.value;
+    setSearchValue(value);
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(searchByText(searchValue));
+    }, 300);
+  }, [searchValue]);
 
   return (
     <Wrapper
@@ -87,6 +101,8 @@ const Hero = () => {
               className={activeSearch ? " active search_input" : "search_input"}
               type="search"
               name="search"
+              value={searchValue}
+              onChange={onChange}
               placeholder="Search.."
             ></input>
             <span

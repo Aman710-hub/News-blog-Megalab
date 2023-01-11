@@ -123,6 +123,7 @@ export default HomeBody;
 const Wrapper = styled.section`
   position: relative;
   margin-top: 46px;
+  /* height: 100vh; */
 
   .iner_wrapper {
     margin-inline: 10%;

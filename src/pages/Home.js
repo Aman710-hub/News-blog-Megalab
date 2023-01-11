@@ -22,4 +22,6 @@ const Home = () => {
 
 export default Home;
 
-const Wrapper = styled.section``;
+const Wrapper = styled.section`
+  /* height: 100vh; */
+`;

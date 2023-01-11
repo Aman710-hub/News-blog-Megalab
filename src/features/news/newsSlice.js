@@ -188,6 +188,46 @@ export const commentReplay = createAsyncThunk(
     }
   }
 );
+export const searchByText = createAsyncThunk(
+  "post/searchByText",
+  async (searchText, thunkAPI) => {
+    try {
+      const resp = await customFetch.get(`/post/?search=${searchText}`, {
+        headers: {
+          authorization: `Token ${getUserTokenFromLocalStorage()}`,
+        },
+      });
+      console.log("searched posts", resp.data);
+      return resp.data;
+    } catch (error) {
+      console.log(error.response.data);
+      if (error.response.data.text) {
+        return thunkAPI.rejectWithValue(error.response.data.text[0]);
+      }
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+export const searchByTag = createAsyncThunk(
+  "post/searchByTag",
+  async (searchTag, thunkAPI) => {
+    try {
+      const resp = await customFetch.get(`/post/?tag=${searchTag}`, {
+        headers: {
+          authorization: `Token ${getUserTokenFromLocalStorage()}`,
+        },
+      });
+      console.log("TAG posts", resp.data);
+      return resp.data;
+    } catch (error) {
+      console.log(error.response.data);
+      if (error.response.data.text) {
+        return thunkAPI.rejectWithValue(error.response.data.text[0]);
+      }
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
 
 // const nav = useNavigate();
 
@@ -200,6 +240,18 @@ export const newsSlice = createSlice({
     },
   },
   extraReducers: {
+    [searchByTag.fulfilled]: (state, { payload }) => {
+      state.postList = payload;
+    },
+    // SEARCH BY TEXT
+    [searchByText.pending]: (state, { payload }) => {
+      state.isLoading = true;
+    },
+    [searchByText.fulfilled]: (state, { payload }) => {
+      toast.success("searched successfully");
+      state.postList = payload;
+      state.isLoading = false;
+    },
     // COMMETNT REPLAY
     [commentReplay.fulfilled]: () => {
       toast.success("Комментарий оставлен");
@@ -230,6 +282,9 @@ export const newsSlice = createSlice({
     // GET ALL POSTS
     [getAllPosts.fulfilled]: (state, { payload }) => {
       state.postList = payload;
+    },
+    [getAllPosts.rejected]: (state, { payload }) => {
+      toast.error("По запросу ничего не найдено");
     },
     // GET TAG LIST
     [getTagList.fulfilled]: (state, { payload }) => {
