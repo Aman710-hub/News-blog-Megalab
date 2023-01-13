@@ -80,9 +80,13 @@ export const editUser = createAsyncThunk(
         },
       });
 
-      setUserToLocalStorage(resp.data);
+      // setUserToLocalStorage(resp.data);
       return resp.data;
     } catch (error) {
+      console.log(error.response.data.profile_image);
+      if (error.response.data.profile_image) {
+        return thunkAPI.rejectWithValue(error.response.data.profile_image[0]);
+      }
       console.log(error.response);
       return thunkAPI.rejectWithValue(error.response.data);
     }
@@ -93,20 +97,16 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    updateProfileImg: (state, { payload }) => {
-      // console.log(payload);
-      // let formData = new FormData();
-      // formData.append("profile_image", payload);
-      // state.profile_image = formData;
-    },
+    updateProfileImg: (state, payload) => {},
   },
   extraReducers: {
     // edit user
-    [editUser.fulfilled]: (state, payloadData) => {
-      const { payload } = payloadData;
-      state.isLoading = true;
-      state.userData = payloadData;
-      console.log(payload);
+    [editUser.fulfilled]: (state, { payload }) => {
+      toast.success("Профиль изменен");
+      setUserToLocalStorage(payload);
+    },
+    [editUser.rejected]: (state, { payload }) => {
+      toast.error(payload);
     },
     // REGISTER
     [registerUser.pending]: (state) => {
@@ -142,39 +142,13 @@ export const userSlice = createSlice({
     [getUser.pending]: (state, { payload }) => {
       state.isLoading = true;
     },
-    [getUser.fulfilled]: (state, payload) => {
+    [getUser.fulfilled]: (state, { payload }) => {
       state.userData = payload;
-      console.log(payload, "kkkkkkkkkkkkkkkkkkkk");
       setUserToLocalStorage(payload);
       toast.success("get data");
-    },
-    [getUser.fulfilled]: (state, { payload }) => {
-      state.isLoading = false;
-      toast.error(payload);
     },
   },
 });
 
 export default userSlice.reducer;
 export const { updateProfileImg } = userSlice.actions;
-
-// fetch(
-//         "https://megalab.pythonanywhere.com/registration/",
-//         {
-//           method: "POST",
-//           headers: { "Content-Type": "application/json" },
-//           body: JSON.stringify({
-//             name: "aman",
-//             last_name: "ama",
-//             nickname: "ni",
-//             password: "111",
-//             password2: "111",
-//           }),
-//         }
-//       )
-//         .then((response) => {
-//           response.json();
-//         })
-//         .then((res) => {
-//           console.log(res);
-//         });

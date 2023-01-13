@@ -1,28 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { editUser } from "../features/userSllice";
+import { editUser, getUser } from "../features/userSllice";
 import { updateProfileImg } from "../features/userSllice";
-const ImgUpload = () => {
-  const { profile_image } = useSelector((store) => store.user);
+import { getUserFromLocalStorage } from "../utils/localStorage";
+
+const ImgUpload = ({ setImg, img }) => {
+  const { profile_image, userData } = useSelector((store) => store.user);
+  const baseUrl = `https://megalab.pythonanywhere.com/`;
+
   const dispatch = useDispatch();
   const [profileImg, setProfileImg] = useState(null);
-  const [im, setIm] = useState(null);
+  const data = getUserFromLocalStorage();
 
-  // const handleFormData = (file) => {
+  const imggg = new Blob([data.profile_image]);
+  const eee = URL.createObjectURL(imggg);
 
-  // };
   const onFileSelect = (e) => {
     if (e.target.files.leghth !== 0) {
       setProfileImg(URL.createObjectURL(e.target.files[0]));
-      setIm(e.target.files[0]);
-      // dispatch(updateProfileImg(im));
+      setImg(e.target.files[0]);
     }
   };
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, []);
+
   return (
     <Wrapper>
-      {profileImg ? (
-        <img src={profileImg || profile_image} className="avatar"></img>
+      {profileImg || data.profile_image ? (
+        <img
+          src={profileImg || `${baseUrl}${data.profile_image}`}
+          className="avatar"
+        ></img>
       ) : (
         <div>
           <img src="" className="avatar"></img>

@@ -12,6 +12,7 @@ const initialState = {
   postDitails: {},
   is_liked: null,
   likedPostList: [],
+  myPosts: [],
 };
 
 export const getAllPosts = createAsyncThunk(
@@ -228,6 +229,22 @@ export const searchByTag = createAsyncThunk(
     }
   }
 );
+export const getAuthor = createAsyncThunk(
+  "user/getAuthor",
+  async (author, thunkAPI) => {
+    try {
+      const resp = await customFetch.get(`/post/?author=${author}`, {
+        headers: {
+          authorization: `Token ${getUserTokenFromLocalStorage()}`,
+        },
+      });
+      return resp.data;
+    } catch (error) {
+      console.log(error.response);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
 
 // const nav = useNavigate();
 
@@ -240,6 +257,11 @@ export const newsSlice = createSlice({
     },
   },
   extraReducers: {
+    [getAuthor.fulfilled]: (state, { payload }) => {
+      state.postList = [];
+      state.myPosts = payload;
+    },
+    // SEARCH BY TEXT
     [searchByTag.fulfilled]: (state, { payload }) => {
       state.postList = payload;
     },
@@ -250,6 +272,7 @@ export const newsSlice = createSlice({
     [searchByText.fulfilled]: (state, { payload }) => {
       toast.success("searched successfully");
       state.postList = payload;
+      state.likedPostList = payload;
       state.isLoading = false;
     },
     // COMMETNT REPLAY

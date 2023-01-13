@@ -9,7 +9,7 @@ import {
   ProfileForm,
   ProfilePostItem,
 } from "../components";
-import { getAllPosts, getTagList } from "../features/news/newsSlice";
+import { getAllPosts, getAuthor, getTagList } from "../features/news/newsSlice";
 import { editUser, getUser } from "../features/userSllice";
 import { getUserFromLocalStorage } from "../utils/localStorage";
 
@@ -21,62 +21,65 @@ import { getUserFromLocalStorage } from "../utils/localStorage";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const { profile_image } = useSelector((store) => store.user);
-  const { postList } = useSelector((store) => store.news);
+  // const { profile_image } = useSelector((store) => store.user);
+  const { postList, myPosts } = useSelector((store) => store.news);
   const data = getUserFromLocalStorage();
+  console.log("🚀 ~ Profile ~ data", data.profile_image);
   const [toggleModal, setToggleModal] = useState(false);
+  const [img, setImg] = useState(null);
 
   // prevent scrolling when pop up is open
   toggleModal
     ? (document.body.style.overflow = "hidden")
     : (document.body.style.overflow = "auto");
 
-  const [userInfo, setUserInfo] = useState({
+  const [CollectuserInfo, setCollectUserInfo] = useState({
     name: data?.name || "",
     last_name: data?.last_name || "",
     nickname: data?.nickname || "",
-    profile_image: profile_image || null,
+    profile_image: data.profile_image,
   });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const { name, nickname, last_name, profile_image } = userInfo;
+    const { name, nickname, last_name, profile_image } = CollectuserInfo;
     if (!name || !last_name || !nickname) {
       toast.error("Заполните все поля");
       return;
     }
-
-    dispatch(
-      editUser({
-        name: name,
-        last_name: last_name,
-        nickname: nickname,
-        profile_image: profile_image,
-      })
-    );
+    const userData = new FormData();
+    userData.append("name", name);
+    userData.append("last_name", last_name);
+    userData.append("nickname", nickname);
+    userData.append("profile_image", img);
+    dispatch(editUser(userData));
   };
 
   const onChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setUserInfo({ ...userInfo, [name]: value });
-    console.log(value);
+    setCollectUserInfo({ ...CollectuserInfo, [name]: value });
   };
 
-  const arr = postList.filter((item) => {
-    return item.author === data.nickname;
-  });
+  // const arr = postList.filter((item) => {
+  //   return item.author === data.nickname;
+  // });
 
   useEffect(() => {
     dispatch(getTagList());
-    dispatch(getAllPosts());
+    dispatch(getAuthor(data.nickname));
+    // dispatch(getAllPosts())
   }, []);
   return (
     <Wrapper>
       <AddNewPost toggleModal={toggleModal} setToggleModal={setToggleModal} />
       <div className="profile_header">
-        <ImgUpload />
-        <ProfileForm data={userInfo} onChange={onChange} onSubmit={onSubmit} />
+        <ImgUpload setImg={setImg} img={img} />
+        <ProfileForm
+          data={CollectuserInfo}
+          onChange={onChange}
+          onSubmit={onSubmit}
+        />
       </div>
       <div className="flex_wrapper">
         <h2 className="profile_title">Мои публикации</h2>
@@ -87,7 +90,7 @@ const Profile = () => {
         />
       </div>
       <div className="grid_layout">
-        {arr.map((item) => {
+        {myPosts?.map((item) => {
           const { id, title, image, is_liked, short_desc } = item;
           return (
             <ProfilePostItem

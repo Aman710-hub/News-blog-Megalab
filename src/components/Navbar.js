@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -10,15 +10,19 @@ const Navbar = () => {
   const [activeMenu, setActiveMenu] = useState(false);
   const [activeSearch, setActiveSearch] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const search = (e) => {
-    const value = e.target.value;
-    console.log("🚀 ~ search ~ value", value);
-    setSearchValue(value);
-    if (value === "") {
-      dispatch(getAllPosts());
-    }
+  // const search = (e) => {
+  //   const value = e.target.value;
+  //   console.log("🚀 ~ search ~ value", value);
+  //   setSearchValue(value);
+  //   if (value === "") {
+  //     dispatch(getAllPosts());
+  //   }
+  //   dispatch(searchByText(searchValue));
+  // };
+
+  useEffect(() => {
     dispatch(searchByText(searchValue));
-  };
+  }, [searchValue]);
   return (
     <Wrapper
       onClick={(e) => {
@@ -103,7 +107,7 @@ const Navbar = () => {
               name="search"
               placeholder="Search.."
               value={searchValue}
-              onChange={search}
+              onChange={(e) => setSearchValue(e.target.value)}
             ></input>
             <span
               className="search_icon"
