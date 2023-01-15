@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Button, Input } from "../components";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser, registerUser } from "../features/userSllice";
+import { getUser, loginUser, registerUser } from "../features/userSllice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import { getUserFromLocalStorage } from "../utils/localStorage";
@@ -17,6 +17,7 @@ const initialState = {
 
 const Rejester = () => {
   const { user, token } = useSelector((store) => store.user);
+  console.log("🚀 ~ Rejester ~ token", token);
   console.log("🚀 ~ Rejester ~ user", user);
 
   const [value, setValue] = useState({ isLogged: false });
@@ -29,14 +30,11 @@ const Rejester = () => {
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    console.log("🚀 ~ handleChange ~ value", value);
-
     setFormValue({ ...formValue, [name]: value });
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-
     const { name, nickname, last_name, password, password2 } = formValue;
     if (value.isLogged === false) {
       if (!name || !last_name || !password2 || !nickname || !password) {
@@ -56,10 +54,9 @@ const Rejester = () => {
           last_name: last_name,
         })
       );
-
       return;
     }
-    //
+    // log in
     if (value.isLogged) {
       if (!nickname || !password) {
         toast.error("Заполните все поля!");
@@ -78,12 +75,11 @@ const Rejester = () => {
   // auto navigate
   useEffect(() => {
     if (token) {
-      console.log("user geted");
       setTimeout(() => {
-        console.log("timer worked");
         toast.success("navigating!!!!!!!");
         navigate("/");
-      }, 5000);
+      }, 2000);
+      dispatch(getUser());
     }
   }, [token]);
   return (
@@ -201,7 +197,7 @@ const Rejester = () => {
         )}
         <div
           className="btn"
-          // onClick={() => setValue({ ...value, isLogged: true })}
+          // onClick={() => setValue({ ...value, isLogged: !value.isLogged })}
         >
           <Button
             name={value.isLogged === false ? "Регистрация" : "Войти"}

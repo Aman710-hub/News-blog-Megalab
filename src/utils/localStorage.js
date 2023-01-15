@@ -15,6 +15,9 @@ export const getUserFromLocalStorage = () => {
 export const setUserTokenToLocalStorage = (token) => {
   localStorage.setItem("token", JSON.stringify(token));
 };
+export const removeUserTokenToLocalStorage = (token) => {
+  localStorage.removeItem("token");
+};
 
 export const getUserTokenFromLocalStorage = () => {
   const result = localStorage.getItem("token");

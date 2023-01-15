@@ -129,6 +129,9 @@ const Wrapper = styled.section`
   margin-bottom: 15px;
   margin-top: 15px;
 
+  .like_btn {
+    cursor: pointer;
+  }
   .card {
     display: grid;
     grid-template-columns: auto 1fr;

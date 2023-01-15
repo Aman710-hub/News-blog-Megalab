@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { getAllPosts, searchByText } from "../features/news/newsSlice";
+import { searchByText } from "../features/news/newsSlice";
+import { logOut } from "../features/userSllice";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -10,15 +11,6 @@ const Navbar = () => {
   const [activeMenu, setActiveMenu] = useState(false);
   const [activeSearch, setActiveSearch] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  // const search = (e) => {
-  //   const value = e.target.value;
-  //   console.log("🚀 ~ search ~ value", value);
-  //   setSearchValue(value);
-  //   if (value === "") {
-  //     dispatch(getAllPosts());
-  //   }
-  //   dispatch(searchByText(searchValue));
-  // };
 
   useEffect(() => {
     dispatch(searchByText(searchValue));
@@ -28,7 +20,6 @@ const Navbar = () => {
       onClick={(e) => {
         setActivePerson(false);
         setActiveMenu(false);
-        // setActiveSearch(false);
       }}
     >
       <div className="navbar">
@@ -178,9 +169,9 @@ const Navbar = () => {
             </svg>
             {activePerson && (
               <div className="drop_down_menu">
-                <a href="">Мой профиль</a>
+                <Link to="/profile">Мой профиль</Link>
                 <hr />
-                <a href="">Выйти</a>
+                <a onClick={() => dispatch(logOut())}>Выйти</a>
               </div>
             )}
           </span>
@@ -225,7 +216,7 @@ const Navbar = () => {
             </svg>
             {activeMenu && (
               <div className="drop_down_menu_burger">
-                <a href="">Избранные новости</a>
+                <Link to="/favorite">Избранные новости</Link>
               </div>
             )}
           </span>
@@ -258,6 +249,7 @@ const Wrapper = styled.nav`
     height: 2rem;
     opacity: 0;
     border-radius: 10px;
+    border: 2px black solid;
     /* transition: opacity 0.5s; */
     /* z-index: 1000; */
   }
@@ -279,6 +271,10 @@ const Wrapper = styled.nav`
 
   a {
     color: black;
+  }
+
+  a:hover {
+    color: #7e5bc2;
   }
 
   span {
@@ -313,44 +309,46 @@ const Wrapper = styled.nav`
     bottom: -92px;
     z-index: 1000;
     padding: 12px 15px 12px 12px;
+    border: 2px black solid;
   }
   .drop_down_menu_burger {
     position: absolute;
     background-color: #ffffff;
     border-radius: 10px;
-    width: 176px;
+    width: 178px;
     height: auto;
     left: -137px;
     /* bottom: -74px; */
     z-index: 1000;
     padding: 13px 10px 12px 12px;
+    border: 2px black solid;
   }
 
   .drop_down_menu::before {
     content: "";
     display: block;
-    width: 0;
-    height: 0;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-bottom: 5px solid #ffffff;
+    border-bottom: 6px solid black;
     position: absolute;
-    top: -5px;
+    top: -7px;
     left: 86%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
     transform: translateX(-50%);
     z-index: 1000;
   }
   .drop_down_menu_burger::before {
     content: "";
     display: block;
-    width: 0;
-    height: 0;
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
-    border-bottom: 5px solid #ffffff;
+    border-bottom: 6px solid black;
     position: absolute;
-    top: -5px;
+    top: -7px;
     left: 86%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
     transform: translateX(-50%);
     z-index: 1000;
   }

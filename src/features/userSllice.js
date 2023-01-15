@@ -6,15 +6,16 @@ import {
   getUserFromLocalStorage,
   getUserTokenFromLocalStorage,
   removeFromLocalStorage,
+  removeUserTokenToLocalStorage,
   setUserTokenToLocalStorage,
   setUserToLocalStorage,
 } from "../utils/localStorage";
 
 const initialState = {
   isLoading: false,
-  user: {},
+  user: null,
   token: null,
-  userData: {},
+  userData: null,
   profile_image: null,
 };
 
@@ -97,47 +98,15 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    updateProfileImg: (state, payload) => {},
+    logOut: (state, payload) => {
+      state.userData = null;
+      state.token = null;
+      removeFromLocalStorage();
+      removeUserTokenToLocalStorage();
+      console.log("Hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii0");
+    },
   },
   extraReducers: {
-    // edit user
-    [editUser.fulfilled]: (state, { payload }) => {
-      toast.success("Профиль изменен");
-      setUserToLocalStorage(payload);
-    },
-    [editUser.rejected]: (state, { payload }) => {
-      toast.error(payload);
-    },
-    // REGISTER
-    [registerUser.pending]: (state) => {
-      state.isLoading = true;
-    },
-    [registerUser.fulfilled]: (state, { payload }) => {
-      state.isLoading = false;
-      state.user = payload;
-      // setUserToLocalStorage(payload);
-      toast.success(`Добро пожаловать ${payload.name}`);
-    },
-    [registerUser.rejected]: (state, { payload }) => {
-      state.isLoading = false;
-      toast.error(payload);
-      state.user = null;
-    },
-    // login
-    [loginUser.pending]: (state) => {
-      state.isLoading = true;
-    },
-    [loginUser.fulfilled]: (state, { payload }) => {
-      state.isLoading = false;
-      setUserTokenToLocalStorage(payload.token);
-      state.token = payload.token;
-      // state.user = payload;
-      // toast.success(`С возврвшением`);
-    },
-    [loginUser.rejected]: (state, { payload }) => {
-      state.isLoading = false;
-      toast.error("Неверный пользователь");
-    },
     // get user
     [getUser.pending]: (state, { payload }) => {
       state.isLoading = true;
@@ -147,8 +116,47 @@ export const userSlice = createSlice({
       setUserToLocalStorage(payload);
       toast.success("get data");
     },
+    // REGISTER
+    // [registerUser.pending]: (state) => {
+    //   state.isLoading = true;
+    // },
+    [registerUser.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      state.user = payload;
+      console.log(payload);
+      // setUserToLocalStorage(payload);
+      toast.success(`Добро пожаловать ${payload.name}`);
+    },
+    [registerUser.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error(payload);
+      // state.user = null;
+    },
+    // login
+    // [loginUser.pending]: (state) => {
+    //   state.isLoading = true;
+    // },
+    [loginUser.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      setUserTokenToLocalStorage(payload.token);
+      state.token = payload.token;
+      toast.success(`С возврвшением`);
+    },
+    [loginUser.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+      toast.error("Неверный пользователь");
+    },
+    // edit user
+
+    [editUser.fulfilled]: (state, { payload }) => {
+      toast.success("Профиль изменен");
+      setUserToLocalStorage(payload);
+    },
+    [editUser.rejected]: (state, { payload }) => {
+      toast.error(payload);
+    },
   },
 });
 
 export default userSlice.reducer;
-export const { updateProfileImg } = userSlice.actions;
+export const { logOut } = userSlice.actions;
