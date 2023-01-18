@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { searchByText } from "../features/news/newsSlice";
+import { getLikedPosts, searchByText } from "../features/news/newsSlice";
 import { logOut } from "../features/userSllice";
 
 const Navbar = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [activePerson, setActivePerson] = useState(false);
   const [activeMenu, setActiveMenu] = useState(false);
   const [activeSearch, setActiveSearch] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+
+  if (searchValue === "") {
+    dispatch(getLikedPosts());
+  }
 
   useEffect(() => {
     dispatch(searchByText(searchValue));
@@ -171,7 +176,14 @@ const Navbar = () => {
               <div className="drop_down_menu">
                 <Link to="/profile">Мой профиль</Link>
                 <hr />
-                <a onClick={() => dispatch(logOut())}>Выйти</a>
+                <a
+                  onClick={() => {
+                    dispatch(logOut());
+                    navigate("register");
+                  }}
+                >
+                  Выйти
+                </a>
               </div>
             )}
           </span>

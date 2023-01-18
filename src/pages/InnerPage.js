@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Button, Coment } from "../components";
+import { Button, Coment, SharePost } from "../components";
 import {
   likePost,
   getPostDitails,
   likePostReducer,
   Comment,
 } from "../features/news/newsSlice";
-import { getUserFromLocalStorage } from "../utils/localStorage";
 
 const InnerPage = () => {
   const dispacth = useDispatch();
   const { postDitails, is_liked } = useSelector((store) => store.news);
   const { postId } = useParams();
   const baseUrl = `https://megalab.pythonanywhere.com/`;
+  const [toggleModal, setToggleModal] = useState(false);
+
+  // prevent scrolling when pop up is open
+  toggleModal
+    ? (document.body.style.overflow = "hidden")
+    : (document.body.style.overflow = "auto");
 
   const [dataCollect, setDataCollect] = useState({
     comment: "",
@@ -48,12 +53,12 @@ const InnerPage = () => {
     const value = e.target.value;
     const name = e.target.name;
     setDataCollect({ ...dataCollect, [name]: value });
-    console.log(dataCollect.comment);
   };
 
   return (
     <>
       <Wrapper>
+        <SharePost setToggleModal={setToggleModal} toggleModal={toggleModal} />
         <Link onClick={() => history(-1)}>
           <svg
             className="arrow"
@@ -128,7 +133,7 @@ const InnerPage = () => {
               className="product_img"
             />
             <p>{postDitails.text}</p>
-            <a href="" className="share">
+            <a onClick={() => setToggleModal(true)} className="share">
               <svg
                 width="24"
                 height="24"
@@ -192,7 +197,6 @@ const InnerPage = () => {
             />
           </div>
         </div>
-
         {postDitails?.comment?.map((item) => {
           return <Coment key={item.id} comment={item} postId={postId} />;
         })}
@@ -267,6 +271,7 @@ const Wrapper = styled.section`
     width: 24px;
     margin-bottom: 50px;
     margin-top: 24px;
+    cursor: pointer;
   }
 
   .card_text {

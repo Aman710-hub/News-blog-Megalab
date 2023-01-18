@@ -17,6 +17,7 @@ import ProfileForm from "./ProfileForm";
 import AddNewPost from "./AddNewPost";
 import ProfilePostItem from "./ProfilePostItem";
 import CommentReply from "./CommentReply";
+import SharePost from "./SharePost";
 
 export {
   Button,
@@ -38,4 +39,5 @@ export {
   AddNewPost,
   ProfilePostItem,
   CommentReply,
+  SharePost,
 };

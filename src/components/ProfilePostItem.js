@@ -3,10 +3,12 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { deletePost, likePost } from "../features/news/newsSlice";
+import SharePost from "./SharePost";
 
 const ProfilePostItem = ({ id, image, title, short_desc, is_liked }) => {
   const baseUrl = `https://megalab.pythonanywhere.com/`;
   const dispacth = useDispatch();
+  const [toggleModal, setToggleModal] = useState(false);
 
   const removePost = () => {
     dispacth(deletePost(id));
@@ -15,6 +17,7 @@ const ProfilePostItem = ({ id, image, title, short_desc, is_liked }) => {
   return (
     <>
       <Wrapper>
+        <SharePost toggleModal={toggleModal} setToggleModal={setToggleModal} />
         <div className="card">
           <img
             src={`${baseUrl}${image}`}
@@ -70,7 +73,7 @@ const ProfilePostItem = ({ id, image, title, short_desc, is_liked }) => {
             <Link to={`/${id}`} className="read_more">
               Читать дальше {">>"}
             </Link>
-            <a href="" className="share">
+            <a className="share" onClick={() => setToggleModal(true)}>
               <svg
                 width="24"
                 height="24"
@@ -167,6 +170,7 @@ const Wrapper = styled.section`
   .share {
     display: block;
     width: 24px;
+    cursor: pointer;
   }
 
   .card_text {

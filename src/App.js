@@ -9,16 +9,8 @@ import {
 
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { MainLayout, SecenderyLayout } from "./components";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "./features/userSllice";
+
 function App() {
-  const { userData } = useSelector((store) => store.user);
-  console.log("🚀 ~ App ~ user", userData);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getUser());
-  }, []);
   return (
     <div className="App">
       <BrowserRouter>

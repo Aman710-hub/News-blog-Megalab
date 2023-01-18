@@ -185,6 +185,7 @@ const Rejester = () => {
           name="password"
           type="password"
           handleChange={handleChange}
+          maxLength="10"
         />
         {value.isLogged === false && (
           <Input
@@ -193,6 +194,7 @@ const Rejester = () => {
             type="password"
             name="password2"
             handleChange={handleChange}
+            maxLength="10"
           />
         )}
         <div
@@ -202,6 +204,8 @@ const Rejester = () => {
           <Button
             name={value.isLogged === false ? "Регистрация" : "Войти"}
             type="submit"
+            maxWidth="168px"
+            height="30px"
           />
         </div>
         <p className="isLogged">

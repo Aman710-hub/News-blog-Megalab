@@ -6,10 +6,12 @@ import { getLikedPosts } from "../features/news/newsSlice";
 
 const Favorite = () => {
   const dispacth = useDispatch();
-  const { likedPostList } = useSelector((store) => store.news);
-  useEffect(() => {
-    dispacth(getLikedPosts());
-  }, []);
+  const { likedPostList, searchList } = useSelector((store) => store.news);
+  // useEffect(() => {
+  //   dispacth(getLikedPosts());
+  // }, []);
+
+  // if (likedPostList.length > 1 && searchList.length < 1) {
   return (
     <Wrapper>
       {/* <Navbar /> */}
@@ -31,6 +33,7 @@ const Favorite = () => {
       </div>
     </Wrapper>
   );
+  // }
 };
 
 export default Favorite;
@@ -39,6 +42,7 @@ const Wrapper = styled.section`
   width: 100%;
   max-width: 90rem;
   margin-inline: auto;
+  min-height: 100vh;
 
   .Favorit_page_title {
     margin-block: 45px;

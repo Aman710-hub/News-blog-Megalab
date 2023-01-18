@@ -13,6 +13,7 @@ const initialState = {
   is_liked: null,
   likedPostList: [],
   myPosts: [],
+  searchList: [],
 };
 
 export const getAllPosts = createAsyncThunk(
@@ -272,7 +273,8 @@ export const newsSlice = createSlice({
     [searchByText.fulfilled]: (state, { payload }) => {
       toast.success("searched successfully");
       state.postList = payload;
-      state.likedPostList = payload;
+      state.searchList = payload;
+      // state.likedPostList = payload;
       state.isLoading = false;
     },
     // COMMETNT REPLAY

@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { searchByText } from "../features/news/newsSlice";
 import { logOut } from "../features/userSllice";
 import back from "../imges/nav-background.jpg";
 
 const Hero = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [activePerson, setActivePerson] = useState(false);
   const [activeMenu, setActiveMenu] = useState(false);
   const [activeSearch, setActiveSearch] = useState(false);
@@ -18,9 +19,7 @@ const Hero = () => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      dispatch(searchByText(searchValue));
-    }, 300);
+    dispatch(searchByText(searchValue));
   }, [searchValue]);
 
   return (
@@ -179,7 +178,14 @@ const Hero = () => {
               <div className="drop_down_menu">
                 <Link to="/profile">Мой профиль</Link>
                 <hr />
-                <a onClick={() => dispatch(logOut())}>Выйти</a>
+                <a
+                  onClick={() => {
+                    dispatch(logOut());
+                    navigate("register");
+                  }}
+                >
+                  Выйти
+                </a>
               </div>
             )}
           </span>

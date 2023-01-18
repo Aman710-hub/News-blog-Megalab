@@ -9,20 +9,13 @@ import {
   ProfileForm,
   ProfilePostItem,
 } from "../components";
-import { getAllPosts, getAuthor, getTagList } from "../features/news/newsSlice";
+import { getAuthor, getTagList } from "../features/news/newsSlice";
 import { editUser, getUser } from "../features/userSllice";
 import { getUserFromLocalStorage } from "../utils/localStorage";
 
-// let width = 0;
-// window.addEventListener("resize", () => {
-//   width = window.innerWidth;
-//   console.log(width);
-// });
-
 const Profile = () => {
   const dispatch = useDispatch();
-  // const { profile_image } = useSelector((store) => store.user);
-  const { postList, myPosts } = useSelector((store) => store.news);
+  const { myPosts } = useSelector((store) => store.news);
   const data = getUserFromLocalStorage();
   console.log("🚀 ~ Profile ~ data", data.profile_image);
   const [toggleModal, setToggleModal] = useState(false);
@@ -60,10 +53,6 @@ const Profile = () => {
     const value = e.target.value;
     setCollectUserInfo({ ...CollectuserInfo, [name]: value });
   };
-
-  // const arr = postList.filter((item) => {
-  //   return item.author === data.nickname;
-  // });
 
   useEffect(() => {
     dispatch(getTagList());
@@ -115,6 +104,7 @@ const Wrapper = styled.section`
   max-width: 90rem;
   margin-inline: auto;
   margin-top: 50px;
+  min-height: 100vh;
 
   .flex_wrapper {
     display: flex;

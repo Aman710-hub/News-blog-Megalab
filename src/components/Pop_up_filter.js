@@ -38,7 +38,7 @@ const Pop_up_filter = ({ toggleModal, setToggleModal }) => {
               </label>
             </div>
             <div onClick={() => setToggleModal(false)}>
-              <Button name="Приминить" />
+              <Button name="Приминить" maxWidth="168px" height="30px" />
             </div>
           </div>
         </div>

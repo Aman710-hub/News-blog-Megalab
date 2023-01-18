@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { getLikes, likePost } from "../features/news/newsSlice";
+import { likePost } from "../features/news/newsSlice";
+import SharePost from "./SharePost";
 
 const HomePageItem = ({ title, image, short_desc, id, is_liked }) => {
   const dispacth = useDispatch();
+  const [toggleModal, setToggleModal] = useState(false);
 
   const [state, setState] = useState(is_liked);
   const likePost111 = () => {
@@ -15,6 +17,7 @@ const HomePageItem = ({ title, image, short_desc, id, is_liked }) => {
   return (
     <>
       <Wrapper>
+        <SharePost toggleModal={toggleModal} setToggleModal={setToggleModal} />
         <div className="card">
           <img
             src={`https://megalab.pythonanywhere.com/${image}`}
@@ -67,7 +70,7 @@ const HomePageItem = ({ title, image, short_desc, id, is_liked }) => {
             <Link to={`/${id}`} className="read_more">
               Читать дальше {">>"}
             </Link>
-            <a href="" className="share">
+            <a className="share" onClick={() => setToggleModal(true)}>
               <svg
                 width="24"
                 height="24"
@@ -165,6 +168,7 @@ const Wrapper = styled.section`
   .share {
     display: block;
     width: 24px;
+    cursor: pointer;
   }
 
   .card_text {

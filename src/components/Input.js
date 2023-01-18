@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Input = ({ lable, type, name, value, handleChange }) => {
+const Input = ({ lable, type, name, value, handleChange, maxLength }) => {
   return (
     <Wrapper>
       <div className="form">
@@ -14,6 +14,7 @@ const Input = ({ lable, type, name, value, handleChange }) => {
               name={name}
               value={value}
               onChange={handleChange}
+              maxLength={maxLength}
             />
             {lable === "Пароль" ? (
               <p className="uderInput">Лимит на символы</p>
