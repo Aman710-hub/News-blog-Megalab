@@ -9,15 +9,15 @@ import {
   ProfileForm,
   ProfilePostItem,
 } from "../components";
+import Loader from "../components/Loader";
 import { getAuthor, getTagList } from "../features/news/newsSlice";
 import { editUser, getUser } from "../features/userSllice";
 import { getUserFromLocalStorage } from "../utils/localStorage";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const { myPosts } = useSelector((store) => store.news);
+  const { myPosts, isLoading } = useSelector((store) => store.news);
   const data = getUserFromLocalStorage();
-  console.log("🚀 ~ Profile ~ data", data.profile_image);
   const [toggleModal, setToggleModal] = useState(false);
   const [img, setImg] = useState(null);
 
@@ -59,6 +59,7 @@ const Profile = () => {
     dispatch(getAuthor(data.nickname));
     // dispatch(getAllPosts())
   }, []);
+
   return (
     <Wrapper>
       <AddNewPost toggleModal={toggleModal} setToggleModal={setToggleModal} />
@@ -105,6 +106,12 @@ const Wrapper = styled.section`
   margin-inline: auto;
   margin-top: 50px;
   min-height: 100vh;
+
+  .wrapper1 {
+    width: 1px;
+    margin-inline: auto;
+    margin-top: 150px;
+  }
 
   .flex_wrapper {
     display: flex;

@@ -17,11 +17,7 @@ const Item = ({ id, image, title, short_desc, is_liked }) => {
     <>
       <Wrapper>
         <div className="card">
-          <img
-            src={`${baseUrl}${image}`}
-            alt="product image"
-            className="product_img"
-          />
+          <img src={`${baseUrl}${image}`} alt="Image" className="product_img" />
           <div className="card_body">
             <div className="inner_wrapper">
               <p className="data">29.11.2022</p>
@@ -129,6 +125,9 @@ const Wrapper = styled.section`
   margin-bottom: 15px;
   margin-top: 15px;
 
+  .like_btn {
+    cursor: pointer;
+  }
   .card {
     display: grid;
     grid-template-columns: auto 1fr;

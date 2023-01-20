@@ -6,7 +6,6 @@ import { updateProfileImg } from "../features/userSllice";
 import { getUserFromLocalStorage } from "../utils/localStorage";
 
 const ImgUpload = ({ setImg, img }) => {
-  const { profile_image, userData } = useSelector((store) => store.user);
   const baseUrl = `https://megalab.pythonanywhere.com/`;
 
   const dispatch = useDispatch();
@@ -14,7 +13,6 @@ const ImgUpload = ({ setImg, img }) => {
   const data = getUserFromLocalStorage();
 
   const imggg = new Blob([data.profile_image]);
-  const eee = URL.createObjectURL(imggg);
 
   const onFileSelect = (e) => {
     if (e.target.files.leghth !== 0) {

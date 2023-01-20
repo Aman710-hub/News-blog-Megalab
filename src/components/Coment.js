@@ -31,7 +31,6 @@ const Coment = ({ comment, postId }) => {
     const value = e.target.value;
     const name = e.target.name;
     setReplayData({ ...replayData, [name]: value });
-    console.log(replayData.comment);
   };
 
   return (

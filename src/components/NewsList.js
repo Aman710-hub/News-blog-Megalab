@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { getAllPosts, searchByText } from "../features/news/newsSlice";
 import HomePageItem from "./HomePageItem";
+import Loader from "./Loader";
 
 const NewsList = () => {
   const { postList, isLoading } = useSelector((store) => store.news);
@@ -13,7 +14,13 @@ const NewsList = () => {
   }, []);
 
   if (isLoading) {
-    return <h1>"Loading..."</h1>;
+    return (
+      <Wrapper>
+        <div className="wrapper">
+          <Loader />
+        </div>
+      </Wrapper>
+    );
   }
   if (postList.length < 1) {
     return <h2>"Ничего не найдено"</h2>;
@@ -48,41 +55,16 @@ const NewsList = () => {
       </Wrapper>
     );
   }
-
-  // if (searchPosts.length >= 1) {
-  //   return (
-  //     <Wrapper>
-  //       {searchPosts?.map((item) => {
-  //         const {
-  //           id,
-  //           tag,
-  //           title,
-  //           text,
-  //           image,
-  //           is_liked,
-  //           comment,
-  //           short_desc,
-  //           author,
-  //         } = item;
-  //         return (
-  //           <HomePageItem
-  //             key={id}
-  //             image={image}
-  //             title={title}
-  //             short_desc={short_desc}
-  //             id={id}
-  //             is_liked={is_liked}
-  //           />
-  //         );
-  //       })}
-  //     </Wrapper>
-  //   );
-  // }
 };
 
 export default NewsList;
 
 const Wrapper = styled.section`
+  .wrapper {
+    width: 1px;
+    margin-inline: auto;
+    margin-top: 150px;
+  }
   @media (max-width: 1132px) {
     display: grid;
     grid-template-columns: 1fr 1fr;

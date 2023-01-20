@@ -24,7 +24,6 @@ export const registerUser = createAsyncThunk(
   async (user, thunkAPI) => {
     try {
       const resp = await customFetch.post("/registration/", user);
-      // console.log(user, resp);
       return resp.data;
     } catch (error) {
       console.log(error.response);
@@ -61,7 +60,6 @@ export const getUser = createAsyncThunk(
           authorization: `Token ${getUserTokenFromLocalStorage()}`,
         },
       });
-      console.log(resp.data);
       setUserToLocalStorage(resp.data);
       return resp.data;
     } catch (error) {
@@ -81,7 +79,6 @@ export const editUser = createAsyncThunk(
         },
       });
 
-      // setUserToLocalStorage(resp.data);
       return resp.data;
     } catch (error) {
       console.log(error.response.data.profile_image);
@@ -103,7 +100,6 @@ export const userSlice = createSlice({
       state.token = null;
       removeFromLocalStorage();
       removeUserTokenToLocalStorage();
-      console.log("Hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii0");
     },
   },
   extraReducers: {
@@ -114,33 +110,21 @@ export const userSlice = createSlice({
     [getUser.fulfilled]: (state, { payload }) => {
       state.userData = payload;
       setUserToLocalStorage(payload);
-      toast.success("get data");
     },
-    // REGISTER
-    // [registerUser.pending]: (state) => {
-    //   state.isLoading = true;
-    // },
+
     [registerUser.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
       state.user = payload;
-      console.log(payload);
-      // setUserToLocalStorage(payload);
-      toast.success(`Добро пожаловать ${payload.name}`);
     },
     [registerUser.rejected]: (state, { payload }) => {
       state.isLoading = false;
       toast.error(payload);
-      // state.user = null;
     },
-    // login
-    // [loginUser.pending]: (state) => {
-    //   state.isLoading = true;
-    // },
     [loginUser.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
       setUserTokenToLocalStorage(payload.token);
       state.token = payload.token;
-      toast.success(`С возврвшением`);
+      toast.success(`Добро пожаловать`);
     },
     [loginUser.rejected]: (state, { payload }) => {
       state.isLoading = false;

@@ -17,8 +17,6 @@ const initialState = {
 
 const Rejester = () => {
   const { user, token } = useSelector((store) => store.user);
-  console.log("🚀 ~ Rejester ~ token", token);
-  console.log("🚀 ~ Rejester ~ user", user);
 
   const [value, setValue] = useState({ isLogged: false });
 
@@ -76,7 +74,6 @@ const Rejester = () => {
   useEffect(() => {
     if (token) {
       setTimeout(() => {
-        toast.success("navigating!!!!!!!");
         navigate("/");
       }, 2000);
       dispatch(getUser());

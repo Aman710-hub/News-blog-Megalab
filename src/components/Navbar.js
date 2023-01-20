@@ -142,6 +142,7 @@ const Navbar = () => {
           <span
             className="person_icon"
             onClick={(e) => {
+              e.preventDefault();
               if (activeMenu) setActiveMenu(false);
               if (activeSearch) setActiveSearch(false);
               setActivePerson(!activePerson);

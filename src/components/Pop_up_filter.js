@@ -3,7 +3,6 @@ import styled from "styled-components";
 import Button from "./Button";
 
 const Pop_up_filter = ({ toggleModal, setToggleModal }) => {
-  console.log(toggleModal);
   return (
     <Wrapper>
       {toggleModal && (

@@ -7,7 +7,6 @@ import Button from "./Button";
 const Filter = ({ toggleModal }) => {
   const [tagName, setTagName] = useState("");
   const [clicked, setClicked] = useState(false);
-  console.log("🚀 ~ Filter ~ clicked", clicked);
 
   const { tagList } = useSelector((store) => store.news);
   const dispatch = useDispatch();
@@ -26,7 +25,7 @@ const Filter = ({ toggleModal }) => {
         <div class="control-group">
           {tagList?.map((item) => {
             return (
-              <div onClick={() => setClicked(!clicked)}>
+              <div key={item.id} onClick={() => setClicked(!clicked)}>
                 <label className="control control-checkbox">
                   {item.name}
                   <input
@@ -35,10 +34,7 @@ const Filter = ({ toggleModal }) => {
                     onClick={(e) => setTagName(e.target.value)}
                     // disabled={clicked}
                   />
-                  <div
-                    // className={`${clicked ? "control_indicator" : "ci1"}`}
-                    className="control_indicator"
-                  ></div>
+                  <div className="control_indicator"></div>
                 </label>
               </div>
             );

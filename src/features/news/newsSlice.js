@@ -199,7 +199,6 @@ export const searchByText = createAsyncThunk(
           authorization: `Token ${getUserTokenFromLocalStorage()}`,
         },
       });
-      console.log("searched posts", resp.data);
       return resp.data;
     } catch (error) {
       console.log(error.response.data);
@@ -219,7 +218,6 @@ export const searchByTag = createAsyncThunk(
           authorization: `Token ${getUserTokenFromLocalStorage()}`,
         },
       });
-      console.log("TAG posts", resp.data);
       return resp.data;
     } catch (error) {
       console.log(error.response.data);
@@ -271,10 +269,9 @@ export const newsSlice = createSlice({
       state.isLoading = true;
     },
     [searchByText.fulfilled]: (state, { payload }) => {
-      toast.success("searched successfully");
       state.postList = payload;
       state.searchList = payload;
-      // state.likedPostList = payload;
+
       state.isLoading = false;
     },
     // COMMETNT REPLAY
@@ -296,8 +293,12 @@ export const newsSlice = createSlice({
       toast.success("Пост успешно удален.");
     },
     // GET LIKED POSTS
+    [getLikedPosts.pending]: (state, { payload }) => {
+      state.isLoading = true;
+    },
     [getLikedPosts.fulfilled]: (state, { payload }) => {
       state.likedPostList = payload;
+      state.isLoading = false;
     },
     // GET POST DITAILS
     [getPostDitails.fulfilled]: (state, { payload }) => {

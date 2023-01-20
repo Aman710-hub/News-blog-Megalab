@@ -19,11 +19,7 @@ const ProfilePostItem = ({ id, image, title, short_desc, is_liked }) => {
       <Wrapper>
         <SharePost toggleModal={toggleModal} setToggleModal={setToggleModal} />
         <div className="card">
-          <img
-            src={`${baseUrl}${image}`}
-            alt="product image"
-            className="product_img"
-          />
+          <img src={`${baseUrl}${image}`} alt="Image" className="product_img" />
           <div className="card_body">
             <div className="inner_wrapper">
               <p className="data">29.11.2022</p>
