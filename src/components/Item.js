@@ -124,13 +124,16 @@ const Wrapper = styled.section`
   /* max-width: 843px; */
   margin-bottom: 15px;
   margin-top: 15px;
+  width: 100%;
+  max-width: 845px;
 
   .like_btn {
     cursor: pointer;
   }
   .card {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 255px 1fr;
+    column-gap: 40px;
   }
 
   .product_img {
