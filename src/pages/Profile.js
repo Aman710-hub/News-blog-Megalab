@@ -20,7 +20,8 @@ const Profile = () => {
   const data = getUserFromLocalStorage();
   const [toggleModal, setToggleModal] = useState(false);
   const [img, setImg] = useState(null);
-
+  const [isPost, setIsPost] = useState(false);
+  const [isDelete, setIsDelete] = useState(!false);
   // prevent scrolling when pop up is open
   toggleModal
     ? (document.body.style.overflow = "hidden")
@@ -58,11 +59,16 @@ const Profile = () => {
     dispatch(getTagList());
     dispatch(getAuthor(data.nickname));
     // dispatch(getAllPosts())
-  }, []);
+  }, [isPost, isDelete]);
 
   return (
     <Wrapper>
-      <AddNewPost toggleModal={toggleModal} setToggleModal={setToggleModal} />
+      <AddNewPost
+        toggleModal={toggleModal}
+        setToggleModal={setToggleModal}
+        isPost={isPost}
+        setIsPost={setIsPost}
+      />
       <div className="profile_header">
         <ImgUpload setImg={setImg} img={img} />
         <ProfileForm
@@ -84,6 +90,8 @@ const Profile = () => {
           const { id, title, image, is_liked, short_desc } = item;
           return (
             <ProfilePostItem
+              isDelete={isDelete}
+              setIsDelete={setIsDelete}
               key={id}
               image={image}
               title={title}

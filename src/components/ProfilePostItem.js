@@ -5,7 +5,14 @@ import styled from "styled-components";
 import { deletePost, likePost } from "../features/news/newsSlice";
 import SharePost from "./SharePost";
 
-const ProfilePostItem = ({ id, image, title, short_desc, is_liked }) => {
+const ProfilePostItem = ({
+  id,
+  image,
+  title,
+  short_desc,
+  isDelete,
+  setIsDelete,
+}) => {
   const baseUrl = `https://megalab.pythonanywhere.com/`;
   const dispacth = useDispatch();
   const [toggleModal, setToggleModal] = useState(false);
@@ -23,7 +30,12 @@ const ProfilePostItem = ({ id, image, title, short_desc, is_liked }) => {
           <div className="card_body">
             <div className="inner_wrapper">
               <p className="data">29.11.2022</p>
-              <div onClick={() => removePost()}>
+              <div
+                onClick={() => {
+                  setIsDelete(!isDelete);
+                  removePost();
+                }}
+              >
                 <span className="trash_btn">
                   <svg
                     width="30"

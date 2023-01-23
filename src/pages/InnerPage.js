@@ -17,7 +17,7 @@ const InnerPage = () => {
   const { postId } = useParams();
   const baseUrl = `https://megalab.pythonanywhere.com/`;
   const [toggleModal, setToggleModal] = useState(false);
-
+  const [isComment, setIsComment] = useState(false);
   // prevent scrolling when pop up is open
   toggleModal
     ? (document.body.style.overflow = "hidden")
@@ -31,7 +31,7 @@ const InnerPage = () => {
   // Get data
   useEffect(() => {
     dispacth(getPostDitails({ postId }));
-  }, []);
+  }, [isComment]);
 
   const likePostServer = () => {
     dispacth(likePost(postId));
@@ -45,7 +45,7 @@ const InnerPage = () => {
     const data = new FormData();
     data.append("text", dataCollect.comment);
     data.append("post", dataCollect.post);
-
+    setIsComment(!isComment);
     dispacth(Comment(data));
   };
 
@@ -198,7 +198,15 @@ const InnerPage = () => {
           </div>
         </div>
         {postDitails?.comment?.map((item) => {
-          return <Coment key={item.id} comment={item} postId={postId} />;
+          return (
+            <Coment
+              key={item.id}
+              comment={item}
+              postId={postId}
+              isComment={isComment}
+              setIsComment={setIsComment}
+            />
+          );
         })}
       </Wrapper>
     </>

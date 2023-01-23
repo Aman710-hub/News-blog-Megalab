@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { addPost } from "../features/news/newsSlice";
 import Button from "./Button";
 
-const AddNewPost = ({ toggleModal, setToggleModal }) => {
+const AddNewPost = ({ toggleModal, setToggleModal, isPost, setIsPost }) => {
   const { tagList } = useSelector((store) => store.news);
   // STATE FOR SELECTED TAG
 
@@ -41,7 +41,7 @@ const AddNewPost = ({ toggleModal, setToggleModal }) => {
     data.append("image", postData.image);
     data.append("short_desc", postData.short_desc);
     data.append("tag", postData.tag);
-
+    setIsPost(!isPost);
     dispatch(addPost(data));
   };
   return (

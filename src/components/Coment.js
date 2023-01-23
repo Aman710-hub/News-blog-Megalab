@@ -5,7 +5,7 @@ import { commentReplay } from "../features/news/newsSlice";
 import Button from "./Button";
 import CommentReply from "./CommentReply";
 
-const Coment = ({ comment, postId }) => {
+const Coment = ({ comment, postId, isComment, setIsComment }) => {
   const dispatch = useDispatch();
   const [showReplay, setShowReplay] = useState({
     parentComment: false,
@@ -17,13 +17,14 @@ const Coment = ({ comment, postId }) => {
     post: postId,
     parent: comment.id,
   });
-  const [s, setS] = useState(false);
+
   const submitReplay = (e) => {
     e.preventDefault();
     const data1 = new FormData();
     data1.append("text", replayData.comment);
     data1.append("post", replayData.post);
     data1.append("parent", replayData.parent);
+    setIsComment(!isComment);
     dispatch(commentReplay(data1));
   };
 
