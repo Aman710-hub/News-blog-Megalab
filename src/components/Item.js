@@ -124,8 +124,6 @@ const Wrapper = styled.section`
   /* max-width: 843px; */
   margin-bottom: 15px;
   margin-top: 15px;
-  width: 100%;
-  max-width: 845px;
 
   .like_btn {
     cursor: pointer;
